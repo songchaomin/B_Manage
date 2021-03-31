@@ -1,7 +1,5 @@
 package com.linln.modules.task.domain;
 
-import com.linln.component.excel.annotation.Excel;
-import com.linln.component.excel.enums.ExcelType;
 import lombok.Data;
 
 import javax.persistence.*;
