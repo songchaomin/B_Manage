@@ -1,0 +1,8 @@
+com\linln\modules\task\service\TaskService.class
+com\linln\modules\task\repository\OwnTaskRepository.class
+com\linln\modules\task\service\OwnTaskService.class
+com\linln\modules\task\domain\OwnTask.class
+com\linln\modules\task\domain\Task.class
+com\linln\modules\task\repository\BaseRepository.class
+com\linln\modules\task\service\impl\OwnTaskServiceImpl$1.class
+com\linln\modules\task\service\impl\OwnTaskServiceImpl.class

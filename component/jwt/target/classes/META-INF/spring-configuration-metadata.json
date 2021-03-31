@@ -1,0 +1,40 @@
+{
+  "groups": [
+    {
+      "name": "project.jwt",
+      "type": "com.linln.component.jwt.config.properties.JwtProjectProperties",
+      "sourceType": "com.linln.component.jwt.config.properties.JwtProjectProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "project.jwt.expired",
+      "type": "java.lang.Integer",
+      "description": "过期时间(天)，默认3天",
+      "sourceType": "com.linln.component.jwt.config.properties.JwtProjectProperties",
+      "defaultValue": 3
+    },
+    {
+      "name": "project.jwt.pattern-anno",
+      "type": "java.lang.Boolean",
+      "description": "权限模式-注解拦截",
+      "sourceType": "com.linln.component.jwt.config.properties.JwtProjectProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "project.jwt.pattern-path",
+      "type": "java.lang.Boolean",
+      "description": "权限模式-路径拦截",
+      "sourceType": "com.linln.component.jwt.config.properties.JwtProjectProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "project.jwt.secret",
+      "type": "java.lang.String",
+      "description": "jwt秘钥",
+      "sourceType": "com.linln.component.jwt.config.properties.JwtProjectProperties",
+      "defaultValue": "mySecret"
+    }
+  ],
+  "hints": []
+}
