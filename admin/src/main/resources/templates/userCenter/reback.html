@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<style>
+    body,ul,li{
+        margin:0;
+        padding: 0;
+    }
+    .integral{
+        height: 200px;
+        width:300px;
+        margin-left:120px;
+        margin-top:20px;
+        font-size: 16px;
+    }
+
+</style>
+<body>
+<div class="integral">
+        <ul>
+            <li><span>QQ邮箱：xxxxx@qq.com</span></li>
+        </ul>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery.mousewheel.min.js}"></script>
+<script>
+    layui.use(['jquery','upload'], function () {
+        var $ = layui.jquery;
+        var upload = layui.upload;
+
+
+    });
+</script>
+</body>
+</html>

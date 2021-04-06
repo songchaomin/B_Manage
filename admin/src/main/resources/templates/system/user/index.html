@@ -78,8 +78,8 @@
                         <label class="timo-checkbox"><input type="checkbox">
                             <i class="layui-icon layui-icon-ok"></i></label>
                     </th>
-                    <th class="sortable" data-field="username">用户编号</th>
-                    <th class="sortable" data-field="nickname">用户名称</th>
+                    <th class="sortable" data-field="username">商户编号</th>
+                    <th class="sortable" data-field="nickname">商户名称</th>
                     <th class="sortable" data-field="sex">性别</th>
                     <th class="sortable" data-field="phone">电话</th>
                     <th class="sortable" data-field="email">邮箱</th>
@@ -92,8 +92,8 @@
                 <tr th:each="item:${list}">
                     <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.id}">
                         <i class="layui-icon layui-icon-ok"></i></label></td>
-                    <td th:text="${item.username}">用户编名</td>
-                    <td th:text="${item.nickname}">用户名称</td>
+                    <td th:text="${item.username}">商户编号</td>
+                    <td th:text="${item.nickname}">商户名称</td>
                     <td th:text="${#dicts.keyValue('USER_SEX', item.sex)}">性别</td>
                     <td th:text="${item.phone}">电话</td>
                     <td th:text="${item.email}">邮箱</td>

@@ -1,5 +1,7 @@
 package com.linln.admin.system.controller;
 
+import com.google.common.collect.ImmutableSet;
+import com.linln.admin.system.validator.UserRegisterValid;
 import com.linln.admin.system.validator.UserValid;
 import com.linln.common.constant.AdminConst;
 import com.linln.common.enums.ResultEnum;
@@ -17,6 +19,7 @@ import com.linln.component.actionLog.annotation.EntityParam;
 import com.linln.component.excel.ExcelUtil;
 import com.linln.component.fileUpload.config.properties.UploadProjectProperties;
 import com.linln.component.shiro.ShiroUtil;
+import com.linln.modules.system.domain.Dept;
 import com.linln.modules.system.domain.Role;
 import com.linln.modules.system.domain.User;
 import com.linln.modules.system.repository.UserRepository;
@@ -35,6 +38,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,6 +74,17 @@ public class UserController {
         model.addAttribute("page", list);
         model.addAttribute("dept", user.getDept());
         return "/system/user/index";
+    }
+
+    @GetMapping("/userlistinfo")
+    public String userlistinfo(Model model, User user) {
+        // 获取用户列表
+        Page<User> list = userService.getPageList(user);
+        // 封装数据
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
+        model.addAttribute("dept", user.getDept());
+        return "/integral/user_pop";
     }
 
     /**
@@ -299,6 +314,64 @@ public class UserController {
         } else {
             return ResultVoUtil.error(statusEnum.getMessage() + "失败，请重新操作");
         }
+    }
+
+
+    @GetMapping("/register")
+    public String registerLogin( Model model) {
+        return "/system/user/register";
+    }
+
+    /**
+     * 保存添加/修改的数据
+     * @param valid 验证对象
+     * @param user 实体对象
+     */
+    @PostMapping("/register")
+    @ResponseBody
+    public ResultVo register(@Validated UserRegisterValid valid, @EntityParam User user, HttpServletRequest request) {
+        ResultVo resultVo=new ResultVo();
+        // 验证数据是否合格
+        if (user.getId() == null) {
+            // 判断密码是否为空
+            if (user.getPassword().isEmpty() || "".equals(user.getPassword().trim())) {
+                throw new ResultException(ResultEnum.USER_PWD_NULL);
+            }
+            // 判断两次密码是否一致
+            if (!user.getPassword().equals(valid.getConfirm())) {
+                throw new ResultException(ResultEnum.USER_INEQUALITY);
+            }
+            // 对密码进行加密
+            String salt = ShiroUtil.getRandomSalt();
+            String encrypt = ShiroUtil.encrypt(user.getPassword(), salt);
+            user.setPassword(encrypt);
+            user.setSalt(salt);
+        }
+        // 判断用户名是否重复
+        if (userService.repeatByUsername(user)) {
+            throw new ResultException(ResultEnum.USER_EXIST);
+        }
+        // 复制保留无需修改的数据
+        if (user.getId() != null) {
+            // 不允许操作超级管理员数据
+            if (user.getId().equals(AdminConst.ADMIN_ID) &&
+                    !ShiroUtil.getSubject().getId().equals(AdminConst.ADMIN_ID)) {
+                throw new ResultException(ResultEnum.NO_ADMIN_AUTH);
+            }
+            User beUser = userService.getById(user.getId());
+            String[] fields = {"password", "salt", "picture", "roles"};
+            EntityBeanUtil.copyProperties(beUser, user, fields);
+        }
+        Dept dept=new Dept();
+        dept.setId(1L);
+        user.setDept(dept);
+        Role role=new Role();
+        role.setId(2L);
+        user.setRoles(ImmutableSet.of(role));
+        user.setStatus((byte)2);
+        // 保存数据
+        userService.save(user);
+        return resultVo;
     }
 
 }

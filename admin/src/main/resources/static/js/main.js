@@ -238,7 +238,7 @@ layui.use(['element', 'form', 'layer', 'upload'], function () {
         window.layerIndex = layer.open({
             type: 2,
             title: title,
-            shadeClose: true,
+            //shadeClose: true,
             maxmin: true,
             area: layerArea,
             content: [url, 'on']

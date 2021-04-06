@@ -20,13 +20,15 @@ public enum ResultEnum implements ResultInterface {
     /**
      * 账户问题
      */
-    USER_EXIST(401, "该用户名已经存在"),
+    USER_EXIST(401, "该手机号码已经存在"),
     USER_PWD_NULL(402, "密码不能为空"),
     USER_INEQUALITY(403, "两次密码不一致"),
     USER_OLD_PWD_ERROR(404, "原来密码不正确"),
     USER_NAME_PWD_NULL(405, "用户名和密码不能为空"),
     USER_CAPTCHA_ERROR(406, "验证码错误"),
-    USER_wangwang_ERROR(407, "旺旺ID已经注册过，请重新输入！"),
+    USER_WANGWANG_ERROR(407, "旺旺ID已经注册过，请重新输入！"),
+    USER_USERNAME_ERROR(407, "该商户积分已经设置，不能许重复！"),
+    SHOP_SHOPNAME_ERROR(407, "同一个商户，店铺名称不能重复！"),
 
     /**
      * 角色问题

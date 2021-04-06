@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+       .upload-img{
+           width: 80px;
+           height:80px;
+           border:0;
+           padding-right: 2px;
+       }
+    </style>
+</head>
+<body>
+<div class="layui-form timo-compile">
+    <form th:action="@{/shop/add}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">商户编号</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="userName" id="userName" placeholder="请选择商户编号">
+            </div>
+            <div class="layui-input-inline">
+                <button type="button" class="layui-btn" id="chs">选择</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">店铺名称</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="shopName" placeholder="请输入店铺名称" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required ">店铺掌柜</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="shopManage" placeholder="请输入店铺掌柜" >
+            </div>
+        </div>
+
+        <div class="layui-form-item ">
+            <label class="layui-form-label required">发货人</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="deliverName" placeholder="请输入发货人" >
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label required">发货电话</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="deliverPhone" placeholder="请输入发货电话" >
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label required">发货地址</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="deliverAddr" placeholder="请输入发货地址" >
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required" >店铺图片</label>
+
+            <button type="button" class="layui-btn" id="shopPicId">上传店铺图片</button>
+            <blockquote  style="margin-top: 5px; margin-left: 30px;">
+                <div class="layui-upload-list" id="shopPicImg"></div>
+            </blockquote>
+            <input type="hidden" name="shopPic"  id="shopPicText" />
+        </div>
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn shop-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['element','upload','layer'], function () {
+        var $ = layui.jquery;
+        var upload = layui.upload;
+        var layer=layui.layer;
+
+        $("#chs").click(function(){
+            window.layerIndex=layer.open({
+                content: ['/system/user/userlistinfo',2]
+                , type: 2
+                ,title:'用户列表'
+                ,area: ['600px', '400px']
+            });
+        });
+
+        //店铺图片上传
+        var shopPicId = upload.render({
+            elem: '#shopPicId'
+            ,field: 'picture'
+            ,exts: 'jpg|png|gif|jpeg'
+            ,url: '/upload/picture' //改成您自己的上传接口
+            ,multiple: true
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#shopPicImg').append('<img src="'+ result +'" alt="'+ file.name +'" class="upload-img">')
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code == 200){
+                    var path=res.data.path;
+                    var oldPath=$("#shopPicText").val();
+                    var newPath="";
+                    if(oldPath!=''){
+                        newPath=oldPath +","+path
+                    }else{
+                        newPath=path;
+                    }
+                    $("#shopPicText").val(newPath);
+                    return layer.msg('上传成功!');
+                }else{
+                    return layer.msg(res.msg);
+                }
+            }
+            ,error: function(){
+            }
+        });
+
+        //提交
+        /* 提交表单数据 */
+        $(document).on("click", ".shop-submit", function (e) {
+            e.preventDefault();
+            var form = $(this).parents("form");
+            var url = form.attr("action");
+            var serializeArray = form.serializeArray();
+            $.post(url, serializeArray, function (result) {
+                if (result.data == null) {
+                    result.data = 'submit[refresh]';
+                }
+                if (result.code === 200) {
+                    layer.msg(result.msg, {offset: '15px', time: 3000, icon: 1});
+                    setTimeout(function () {
+                        if (result.data === 'submit[refresh]') {
+                            parent.location.reload();
+                            return;
+                        }
+                        if (result.data != null && result.data.url != null) {
+                            window.location.href = result.data.url;
+                        } else {
+                            window.location.reload();
+                        }
+                    }, 2000);
+                } else {
+                    layer.msg(result.msg, {offset: '15px', time: 3000, icon: 2});
+                }
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

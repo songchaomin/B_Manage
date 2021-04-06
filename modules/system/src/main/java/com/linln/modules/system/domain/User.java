@@ -63,12 +63,15 @@ public class User implements Serializable {
     private String remark;
     @Excel(value = "状态", dict = "DATA_STATUS")
     private Byte status;
+    //qq号码
+    private String qq;
+    //微信号
+    private String wx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     @JsonIgnore
     private Dept dept;
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sys_user_role",

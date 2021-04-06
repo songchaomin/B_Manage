@@ -24,7 +24,7 @@
         <input type="hidden" name="id" th:value="${id}"/>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <input th:each="item:${list}" type="checkbox" name="roleId" th:title="${item.title}"
+                <input th:each="item:${list}" type="radio" name="roleId" th:title="${item.title}"
                        th:value="${item.id}" th:checked="${#sets.contains(authRoles, item)}" lay-skin="primary">
             </div>
         </div>
