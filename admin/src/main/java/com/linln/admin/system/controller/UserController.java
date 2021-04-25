@@ -158,9 +158,6 @@ public class UserController {
             String[] fields = {"password", "salt", "picture", "roles"};
             EntityBeanUtil.copyProperties(beUser, user, fields);
         }
-
-
-        user.setStatus((byte)2);
         // 保存数据
         userService.save(user);
         return ResultVoUtil.SAVE_SUCCESS;

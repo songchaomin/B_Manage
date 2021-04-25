@@ -10,7 +10,6 @@ import com.linln.component.actionLog.annotation.ActionLog;
 import com.linln.component.actionLog.annotation.EntityParam;
 import com.linln.component.shiro.ShiroUtil;
 import com.linln.modules.system.domain.User;
-import com.linln.modules.task.domain.Integral;
 import com.linln.modules.task.domain.Shop;
 import com.linln.modules.task.service.ShopService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,13 +22,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.Subject;
 import java.util.Date;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/shop")
-public class ShopController {
+@RequestMapping("/task")
+public class TaskController {
     @Autowired
     private ShopService shopService;
 

@@ -15,6 +15,9 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    /**
+     * 任务名称
+     */
     private String taskName;
     private String taskContent;
     @CreatedDate
