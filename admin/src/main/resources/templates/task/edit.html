@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="layui-form timo-compile">
+    <form th:action="@{/integral/edit}">
+        <div class="layui-form-item">
+            <input type="hidden" name="id" th:value="${integral.id}">
+            <label class="layui-form-label required">商户编号</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="userName" id="userName" th:value="${integral.userName}" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">积分</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="point" th:value="${integral.point}" placeholder="请输入积分" >
+            </div>
+        </div>
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn integral-update"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['layer'], function () {
+        var $ = layui.jquery;
+        var layer=layui.layer;
+        $("#chs").click(function(){
+            layer.open({
+                index:1
+                ,content: '/system/user/userlistinfo'
+                , type: 2
+                ,title:'用户列表'
+                ,area: ['600px', '400px']
+            });
+        });
+
+        /* 提交表单数据 */
+        $(document).on("click", ".integral-update", function (e) {
+            e.preventDefault();
+            var form = $(this).parents("form");
+            var url = form.attr("action");
+            var serializeArray = form.serializeArray();
+            $.post(url, serializeArray, function (result) {
+                if (result.data == null) {
+                    result.data = 'submit[refresh]';
+                }
+                if (result.code === 200) {
+                    layer.msg(result.msg, {offset: '15px', time: 3000, icon: 1});
+                    setTimeout(function () {
+                        if (result.data === 'submit[refresh]') {
+                            parent.location.reload();
+                            return;
+                        }
+                        if (result.data != null && result.data.url != null) {
+                            window.location.href = result.data.url;
+                        } else {
+                            window.location.reload();
+                        }
+                    }, 2000);
+                } else {
+                    layer.msg(result.msg, {offset: '15px', time: 3000, icon: 2});
+                }
+            });
+        });
+    });
+
+
+
+</script>
+</body>
+</html>

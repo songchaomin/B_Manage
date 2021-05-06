@@ -103,7 +103,7 @@ public class LoginController implements ErrorController {
                 return ResultVoUtil.error("您不是后台管理员！");
             }
         } catch (LockedAccountException e) {
-            return ResultVoUtil.error("该账号已被冻结");
+            return ResultVoUtil.error("恭喜注册成功，等待审核");
         } catch (AuthenticationException e) {
             return ResultVoUtil.error("用户名或密码错误");
         }

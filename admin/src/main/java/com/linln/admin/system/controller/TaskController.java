@@ -1,6 +1,7 @@
 package com.linln.admin.system.controller;
 
 import com.linln.admin.system.validator.ShopValid;
+import com.linln.admin.system.validator.TaskValid;
 import com.linln.common.enums.ResultEnum;
 import com.linln.common.exception.ResultException;
 import com.linln.common.utils.ResultVoUtil;
@@ -11,7 +12,9 @@ import com.linln.component.actionLog.annotation.EntityParam;
 import com.linln.component.shiro.ShiroUtil;
 import com.linln.modules.system.domain.User;
 import com.linln.modules.task.domain.Shop;
+import com.linln.modules.task.domain.Task;
 import com.linln.modules.task.service.ShopService;
+import com.linln.modules.task.service.TaskService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -29,35 +32,35 @@ import java.util.Objects;
 @RequestMapping("/task")
 public class TaskController {
     @Autowired
-    private ShopService shopService;
+    private TaskService taskService;
 
     @GetMapping("/index")
-    @RequiresPermissions("shop:index")
-    public String index(Model model, Shop shop){
+    @RequiresPermissions("task:index")
+    public String index(Model model, Task task){
         User user = ShiroUtil.getSubject();
         if (!Objects.equals(user.getUsername(),"admin")) {
-            shop.setUserName(user.getUsername());
+            task.setMerchantId(user.getId());
         }
         // 创建匹配器，进行动态查询匹配
         ExampleMatcher matcher = ExampleMatcher.matching().
-                withMatcher("shopName", match -> match.contains());
+                withMatcher("merchantId", match -> match.contains());
 
-        Example<Shop> example = Example.of(shop, matcher);
-        Page<Shop> list = shopService.getPageList(example);
+        Example<Task> example = Example.of(task, matcher);
+        Page<Task> list = taskService.getPageList(example);
 
         // 封装数据
         model.addAttribute("list", list.getContent());
         model.addAttribute("page", list);
-        return "/shop/index";
+        return "/task/index";
     }
 
     /**
      * 跳转到添加页面
      */
     @GetMapping("/add")
-    @RequiresPermissions("shop:add")
+    @RequiresPermissions("task:add")
     public String toAdd(){
-        return "/shop/add";
+        return "/task/add";
     }
 
 
@@ -67,19 +70,20 @@ public class TaskController {
      * @param valid 验证对象
      */
     @PostMapping({"/add"})
-    @RequiresPermissions({"shop:add"})
+    @RequiresPermissions({"task:add"})
     @ResponseBody
-    @ActionLog(name = "店铺管理", message = "店铺：${userName}", action = SaveAction.class)
-    public ResultVo save(@Validated ShopValid valid, @EntityParam Shop shop){
-        //1、店铺名称是否重复
-        if ( shopService.repeateShopName(shop.getUserName(),shop.getShopName())) {
+    @ActionLog(name = "任务管理", message = "任务：${userName}", action = SaveAction.class)
+    public ResultVo save(@Validated TaskValid valid, @EntityParam Task task){
+        User user = ShiroUtil.getSubject();
+        //1、任务名称是否重复
+       /* if ( taskService.repeateShopName(shop.getUserName(),shop.getShopName())) {
             throw new ResultException(ResultEnum.SHOP_SHOPNAME_ERROR);
-        }
+        }*/
         //2、保存店铺
-        shop.setCreateDate(new Date());
-        shop.setUpdateDate(new Date());
-        shop.setDeleteFlg((byte)0);
-        shopService.save(shop);
+        task.setCreateDate(new Date());
+        task.setUpdateDate(new Date());
+        task.setDeleteFlg((byte)0);
+        taskService.save(task);
         return ResultVoUtil.SAVE_SUCCESS;
     }
 
@@ -89,10 +93,10 @@ public class TaskController {
     @GetMapping("/detail/{id}")
     @RequiresPermissions("shop:detail")
     public String toDetail(@PathVariable("id") Long id, Model model){
-        Shop shop=shopService.getShopById(id);
+       /* Shop shop=taskService.getShopById(id);
         String [] shopPics=shop.getShopPic()==null ? new String[0] :shop.getShopPic().split(",");
         model.addAttribute("shopPics",shopPics);
-        model.addAttribute("shop",shop);
+        model.addAttribute("shop",shop);*/
         return "/shop/detail";
     }
 
@@ -101,7 +105,7 @@ public class TaskController {
     @RequiresPermissions("shop:delete")
     @ResponseBody
     public ResultVo delete(@PathVariable("id") Long id, Model model){
-        shopService.deleteById(id);
+        //taskService.deleteById(id);
         return  ResultVoUtil.SAVE_SUCCESS;
     }
 
@@ -111,10 +115,10 @@ public class TaskController {
     @GetMapping("/edit/{id}")
     @RequiresPermissions("shop:edit")
     public String toEdit(@PathVariable("id") Long id, Model model){
-        Shop shop = shopService.getShopById(id);
+        /*Shop shop = taskService.getShopById(id);
         String [] shopPics=shop.getShopPic()==null ? new String[0] :shop.getShopPic().split(",");
         model.addAttribute("shopPics",shopPics);
-        model.addAttribute("shop",shop);
+        model.addAttribute("shop",shop);*/
         return "/shop/edit";
     }
 
@@ -127,10 +131,10 @@ public class TaskController {
     @RequiresPermissions({"shop:edit"})
     @ResponseBody
     @ActionLog(name = "店铺管理", message = "店铺：${userName}", action = SaveAction.class)
-    public ResultVo updateShop(@Validated ShopValid valid, @EntityParam Shop shop){
+    public ResultVo updateShop(@Validated TaskValid valid, @EntityParam Task task){
         //2、更新店铺
-        shop.setUpdateDate(new Date());
-        shopService.save(shop);
+        /*shop.setUpdateDate(new Date());
+        taskService.save(shop);*/
         return ResultVoUtil.SAVE_SUCCESS;
     }
 

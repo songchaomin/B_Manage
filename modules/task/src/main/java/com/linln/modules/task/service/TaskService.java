@@ -1,23 +1,30 @@
 package com.linln.modules.task.service;
 
 import com.linln.modules.task.domain.Task;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 
 public interface TaskService {
 
     /**
-     * 任务列表
-     * @param task
+     * 获取店铺分页数据
+     * @param example
      * @return
      */
-    Page<Task> getPageList(Task task);
+    Page<Task> getPageList(Example<Task> example);
 
     /**
      * 保存任务
-     * @param task 用户实体类
-     * @return 任务信息
+     * @param task
+     * @return
      */
     Task save(Task task);
+
+    boolean repeateTaskName(String userName, String taskName);
+
+    void deleteTaskById(Long id);
+
+    Task getTaskById(Long id);
 
 
 }

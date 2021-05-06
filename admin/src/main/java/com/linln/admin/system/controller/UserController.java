@@ -159,6 +159,9 @@ public class UserController {
             EntityBeanUtil.copyProperties(beUser, user, fields);
         }
         // 保存数据
+        if (user.getId() == null) {
+            user.setStatus((byte)2);
+        }
         userService.save(user);
         return ResultVoUtil.SAVE_SUCCESS;
     }
@@ -368,7 +371,7 @@ public class UserController {
         user.setStatus((byte)2);
         // 保存数据
         userService.save(user);
-        return resultVo;
+        return ResultVoUtil.success("注册成功，等待审核！");
     }
 
 }

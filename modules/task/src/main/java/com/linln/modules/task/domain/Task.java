@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -19,14 +20,121 @@ public class Task implements Serializable {
      * 任务名称
      */
     private String taskName;
-    private String taskContent;
-    @CreatedDate
+    /**
+     * 任务类型
+     */
+    private String taskType;
+    /**
+     *店铺名称
+     */
+    private String shopName;
+
+    /**
+     * 宝贝链接
+     */
+    private String babyLink;
+
+    /**
+     * 宝贝关键字
+     */
+    private String babyKey;
+    /**
+     * 宝贝规格
+     */
+    private String babySpec;
+    /**
+     * 宝贝本金
+     */
+    private BigDecimal babyPrice;
+    /**
+     * 是否关注店铺
+     */
+    private Byte attentionStoreFlag;
+    /**
+     * 是否收藏宝贝
+     */
+    private Byte collectBabyFlag;
+    /**
+     * 宝贝图片
+     */
+    private String babyPic;
+    /**
+     * 任务人数
+     */
+    private Integer personNum;
+
+    /**
+     * 任务标签-性别
+     */
+    private  String sex;
+    /**
+     * 任务标签-年龄
+     */
+    private  String age;
+    /**
+     * 任务标签-地区
+     */
+    private String area;
+    /**
+     * 任务标签-婚姻状态
+     */
+    private String marryStatus;
+    /**
+     * 子女年龄
+     */
+    private String childAge;
+    /**
+     * 收入区间
+     */
+    private String incomeRange;
+    /**
+     * 身高区间'
+     */
+    private String height;
+    /**
+     * 身高区间'
+     */
+    private String weight;
+    /**
+     * 学历'
+     */
+    private String xl;
+    /**
+     * 手机品牌'
+     */
+    private String phoneBrand;
+    /**
+     * 是否有车1'
+     */
+    private Byte carInfo;
+    /**
+     * 星座'
+     */
+    private String constellation;
+    /**
+     * 创建时间
+     */
     private Date createDate;
-    @LastModifiedDate
+    /**
+     * 更新时间
+     */
     private Date updateDate;
-    private String merchantName;
-    private String taskLable;
+    /**
+     * 是否活动
+     */
     private Byte effective;
+    /**
+     * 是否删除
+     */
     private Byte deleteFlg;
 
+    /**
+     * 商户Id
+     */
+    private Long merchantId;
+
+    /**
+     * 任务状态 1:新增
+     */
+    private Byte taskStatus;
 }
