@@ -3,23 +3,16 @@
       xmlns:mo="https://gitee.com/aun/Timo"
       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
-    <style>
-        .dict-value {
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css}" type="text/css">
 </head>
 <body class="timo-layout-page">
 <div class="layui-card">
     <div class="layui-card-header timo-card-header">
-        <span><i class="fa fa-bars"></i>店铺管理</span>
+        <span><i class="fa fa-bars"></i> 店铺管理</span>
         <i class="layui-icon layui-icon-refresh refresh-btn"></i>
     </div>
     <div class="layui-card-body">
-        <div class="layui-row timo-card-screen">
+        <div class="layui-row timo-card-screen put-row">
             <div class="pull-left layui-form-pane timo-search-box">
                 <div class="layui-inline">
                     <label class="layui-form-label">店铺名称</label>
@@ -29,23 +22,15 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">掌柜名</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="title" th:value="${param.shopManage}" placeholder="请输入掌柜名"
-                               autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
                     <button class="layui-btn timo-search-btn">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
-            </div>
-            <div class="pull-right screen-btn-group">
-                <button class="layui-btn open-popup" data-title="添加店铺" th:attr="data-url=@{/shop/add}"
-                        shiro:hasPermission="shop:add" data-size="615,558">
-                    <i class="fa fa-plus"></i> 添加
-                </button>
+
+                <div class="layui-inline">
+                    <button type="button" class="layui-btn" id="chs">选择并关闭</button>
+                </div>
+
             </div>
         </div>
         <div class="timo-table-wrap">
@@ -68,7 +53,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="item:${list}">
-                    <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.id}">
+                    <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.shopName}">
                         <i class="layui-icon layui-icon-ok"></i></label></td>
                     <td th:text="${item.userName}">商户名称</td>
                     <td th:text="${item.shopName}">店铺名称</td>
@@ -76,18 +61,6 @@
                     <td th:text="${item.deliverName}">发货人</td>
                     <td th:text="${item.deliverPhone}">发货电话</td>
                     <td th:text="${item.deliverAddr}">发货地址</td>
-                   <!-- <td th:text="${item.shopPic}" class="dict-value">店铺图片</td>-->
-
-                    <td>
-                        <a class="open-popup" data-title="编辑店铺" th:attr="data-url=@{'/shop/edit/'+${item.id}}"
-                           shiro:hasPermission="shop:edit"
-                           data-size="615,558" href="#">编辑</a>
-                        <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/shop/detail/'+${item.id}}"
-                           shiro:hasPermission="shop:detail"
-                           data-size="800,600" href="#">详细</a>
-                        <a class="ajax-get" data-msg="您是否确认删除" th:href="@{'/shop/delete/'+${item.id}}"
-                           shiro:hasPermission="shop:del">删除</a>
-                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -96,19 +69,28 @@
     </div>
 </div>
 <script th:replace="/common/template :: script"></script>
-<script>
-    layui.use(['element'], function () {
-        var $ = layui.jquery;
-        var dv = $(".dict-value");
-        $(window).on("resize", function () {
-            var width = $("body").width();
-            if (width > 1200) {
-                dv.css("max-width", width * 0.32);
-            } else {
-                dv.css("max-width", width * 0.20);
-            }
-        }).resize();
-    });
+<script type="text/javascript" th:src="@{/js/plugins/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/zTree_v3/js/jquery.ztree.core.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/timoTree.js}"></script>
+<script type="text/javascript">
+    $("#chs").click(function(){
+           var tdcheckbox = $(".timo-table td .timo-checkbox :checkbox:checked");
+        if (tdcheckbox.length === 0) {
+            layer.msg('请选择一条记录');
+            return;
+        }
+        if (tdcheckbox.length > 1 && $(this).data("type") === 'radio') {
+            layer.msg('只允许选中一个');
+            return;
+        }
+        tdcheckbox.each(function (key, val) {
+            parent.layui.$("#shopName").val(val.value);
+        });
+           var index= parent.layer.getFrameIndex(window.name);
+           parent.layer.close(index);
+        });
+
+
 </script>
 </body>
 </html>

@@ -29,6 +29,7 @@ public enum ResultEnum implements ResultInterface {
     USER_WANGWANG_ERROR(407, "旺旺ID已经注册过，请重新输入！"),
     USER_USERNAME_ERROR(407, "该商户积分已经设置，不能许重复！"),
     SHOP_SHOPNAME_ERROR(407, "同一个商户，店铺名称不能重复！"),
+    TASK_NAME_REPEATER_ERROR(407, "同一个商户，任务名称不能重复！"),
 
     /**
      * 角色问题

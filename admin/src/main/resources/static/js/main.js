@@ -170,6 +170,26 @@ layui.use(['element', 'form', 'layer', 'upload'], function () {
         });
     });
 
+
+    /* 提交更新表单数据 */
+    $(document).on("click", ".ajax-update", function (e) {
+        e.preventDefault();
+        var form = $(this).parents("form");
+        var url = form.attr("action");
+        var serializeArray = form.serializeArray();
+        $.post(url, serializeArray, function (result) {
+            if (result.code === 200) {
+                layer.msg(result.msg, {offset: '15px', time: 3000, icon: 1});
+                setTimeout(function () {
+                    var index= parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                }, 2000);
+
+            }
+        });
+    });
+
+
     /* get方式异步 */
     $(document).on("click", ".ajax-get", function (e) {
         e.preventDefault();

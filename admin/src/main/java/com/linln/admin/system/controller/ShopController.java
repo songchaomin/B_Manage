@@ -53,6 +53,26 @@ public class ShopController {
         return "/shop/index";
     }
 
+    @GetMapping("/popShopList")
+    @RequiresPermissions("shop:popShopList")
+    public String popShopList(Model model, Shop shop){
+        User user = ShiroUtil.getSubject();
+        if (!Objects.equals(user.getUsername(),"admin")) {
+            shop.setUserName(user.getUsername());
+        }
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching().
+                withMatcher("shopName", match -> match.contains());
+
+        Example<Shop> example = Example.of(shop, matcher);
+        Page<Shop> list = shopService.getPageList(example);
+
+        // 封装数据
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
+        return "/task/shop_pop";
+    }
+
     /**
      * 跳转到添加页面
      */

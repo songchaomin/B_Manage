@@ -9,15 +9,15 @@
     <form th:action="@{/system/user/save}">
         <input type="hidden" name="id" th:if="${user}" th:value="${user.id}"/>
         <div class="layui-form-item">
-            <label class="layui-form-label required">用户名</label>
+            <label class="layui-form-label required">用户编号</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="username"  placeholder="请输入用户名" th:value="${user?.username}">
+                <input class="layui-input" type="text" name="username"  placeholder="请输入用户编号" th:value="${user?.username}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required">用户昵称</label>
+            <label class="layui-form-label required">用户名称</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="nickname" placeholder="请输入用户昵称" th:value="${user?.nickname}">
+                <input class="layui-input" type="text" name="nickname" placeholder="请输入用户名称" th:value="${user?.nickname}">
             </div>
         </div>
         <div class="layui-form-item" th:if="!${user}">
@@ -45,13 +45,6 @@
                 <input class="layui-input" type="text" name="phone" placeholder="请输入电话号码" th:value="${user?.phone}">
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="email" placeholder="请输入邮箱" th:value="${user?.email}">
-            </div>
-        </div>
-
         <div class="layui-form-item">
             <label class="layui-form-label">选择性别</label>
             <div class="layui-input-inline">

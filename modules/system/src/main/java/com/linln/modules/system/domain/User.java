@@ -38,7 +38,7 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Excel(value = "用户ID", type = ExcelType.EXPORT)
     private Long id;
-    @Excel("用户名")
+    @Excel("用户编号")
     private String username;
     @JsonIgnore
     private String password;

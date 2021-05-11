@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="商户管理系统" />
+    <meta name="keywords" content="B端, 商户管理系统, SpringBoot, Jpa, Thymeleaf, Shiro" />
+
+    <link rel="shortcut icon" th:href="@{/mo-favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css}"  media="all">
+    <link rel="stylesheet" th:href="@{/lib/layui-v2.3.0/css/layui.css}"  media="all">
+    <link rel="stylesheet" th:href="@{/css/main.css}"  media="all">
+    <title>商户注册</title>
+</head>
+<style>
+    .layui-form .layui-form-item .layui-form-label{
+        width:140px;
+    }
+
+
+</style>
+<body>
+<div class="layui-form " style="margin: 30px auto;width: 500px;">
+    <form th:action="@{/system/user/update}">
+        <input type="hidden" th:value="${user.id}" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">手机号码</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="username" th:value="${user.username}" readonly placeholder="请输入用户手机号码" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">用户姓名</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="nickname" th:value="${user.nickname}" placeholder="请输入用户昵称">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">QQ</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="qq" th:value="${user.qq}" placeholder="请输入QQ" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">微信</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="wx" th:value="${user.wx}" placeholder="请输入微信">
+            </div>
+        </div>
+            <div style="padding-left: 220px">
+            <button class="layui-btn ajax-update"><i class="fa fa-check-circle"></i>更新</button>
+          </div>
+    </form>
+</div>
+
+<script th:replace="/common/template :: script"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery-2.2.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/zTree_v3/js/jquery.ztree.core.min.js}"></script>
+<script>
+    layui.use(['laydate','upload'], function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#birthday' //指定元素
+        });
+        var upload = layui.upload;
+
+
+
+
+    });
+</script>
+
+</body>
+</html>

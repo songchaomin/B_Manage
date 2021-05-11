@@ -10,40 +10,26 @@
             <tbody>
             <tr>
                 <th width='100px'>用户编号</th>
-                <td th:text="${user.id}"></td>
-                <th width='100px'>用户账号</th>
                 <td th:text="${user.username}"></td>
             </tr>
             <tr>
-                <th>用户昵称</th>
+                <th>用户名称</th>
                 <td th:text="${user.nickname}"></td>
-                <th>用户性别</th>
-                <td th:text="${#dicts.keyValue('USER_SEX', user.sex)}"></td>
             </tr>
             <tr>
-                <th>所在部门</th>
-                <td colspan="4" th:text="${user.dept?.title}"></td>
+                <th>QQ</th>
+                <td th:text="${user.qq}"></td>
             </tr>
             <tr>
-                <th>电话号码</th>
-                <td th:text="${user.phone}"></td>
-                <th>邮箱</th>
-                <td th:text="${user.email}"></td>
+                <th>微信</th>
+                <td th:text="${user.wx}"></td>
             </tr>
             <tr>
                 <th>创建时间</th>
                 <td th:text="${#dates.format(user.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <th>最后修改</th>
-                <td th:text="${#dates.format(user.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-            </tr>
-            <tr>
-                <th>备注</th>
-                <td th:text="${user.remark}" colspan="4"></td>
             </tr>
             </tbody>
         </table>
-
-        <div th:replace="/common/fragment :: log(${user})"></div>
     </div>
 <script th:replace="/common/template :: script"></script>
 </body>

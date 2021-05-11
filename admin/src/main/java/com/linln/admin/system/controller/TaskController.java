@@ -39,7 +39,7 @@ public class TaskController {
     public String index(Model model, Task task){
         User user = ShiroUtil.getSubject();
         if (!Objects.equals(user.getUsername(),"admin")) {
-            task.setMerchantId(user.getId());
+            task.setUserName(user.getUsername());
         }
         // 创建匹配器，进行动态查询匹配
         ExampleMatcher matcher = ExampleMatcher.matching().
@@ -47,7 +47,6 @@ public class TaskController {
 
         Example<Task> example = Example.of(task, matcher);
         Page<Task> list = taskService.getPageList(example);
-
         // 封装数据
         model.addAttribute("list", list.getContent());
         model.addAttribute("page", list);
@@ -76,13 +75,17 @@ public class TaskController {
     public ResultVo save(@Validated TaskValid valid, @EntityParam Task task){
         User user = ShiroUtil.getSubject();
         //1、任务名称是否重复
-       /* if ( taskService.repeateShopName(shop.getUserName(),shop.getShopName())) {
+       if ( taskService.repeateTaskName(task.getUserName(),task.getTaskName())) {
             throw new ResultException(ResultEnum.SHOP_SHOPNAME_ERROR);
-        }*/
-        //2、保存店铺
+        }
+        //2、保存任务
         task.setCreateDate(new Date());
         task.setUpdateDate(new Date());
         task.setDeleteFlg((byte)0);
+        //用户编号
+        task.setUserName(user.getUsername());
+        task.setTaskStatus((byte)1);
+        task.setEffective((byte)1);
         taskService.save(task);
         return ResultVoUtil.SAVE_SUCCESS;
     }
@@ -91,7 +94,7 @@ public class TaskController {
      * 跳转到详细页面
      */
     @GetMapping("/detail/{id}")
-    @RequiresPermissions("shop:detail")
+    @RequiresPermissions("task:detail")
     public String toDetail(@PathVariable("id") Long id, Model model){
        /* Shop shop=taskService.getShopById(id);
         String [] shopPics=shop.getShopPic()==null ? new String[0] :shop.getShopPic().split(",");
@@ -102,10 +105,10 @@ public class TaskController {
 
 
     @GetMapping("/delete/{id}")
-    @RequiresPermissions("shop:delete")
+    @RequiresPermissions("task:delete")
     @ResponseBody
     public ResultVo delete(@PathVariable("id") Long id, Model model){
-        //taskService.deleteById(id);
+        taskService.deleteTaskById(id);
         return  ResultVoUtil.SAVE_SUCCESS;
     }
 

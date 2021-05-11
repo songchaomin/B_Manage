@@ -106,8 +106,17 @@ public class UserController {
     @GetMapping("/edit/{id}")
     @RequiresPermissions("system:user:edit")
     public String toEdit(@PathVariable("id") User user, Model model) {
-        model.addAttribute("user", user);
-        return "/system/user/add";
+        User dbUser = userService.getById(user.getId());
+        model.addAttribute("user", dbUser);
+        return "/system/user/edit";
+    }
+
+    @GetMapping("/detail/{id}")
+    @RequiresPermissions("system:user:edit")
+    public String detail(@PathVariable("id") User user, Model model) {
+        User dbUser = userService.getById(user.getId());
+        model.addAttribute("user", dbUser);
+        return "/system/user/detail";
     }
 
     /**
@@ -165,6 +174,33 @@ public class UserController {
         userService.save(user);
         return ResultVoUtil.SAVE_SUCCESS;
     }
+
+    /**
+     * 保存添加/修改的数据
+     * @param user 实体对象
+     */
+    @PostMapping("/update")
+    @RequiresPermissions({"system:user:update"})
+    @ResponseBody
+    public ResultVo update( @EntityParam User user) {
+
+        // 验证数据是否合格
+        if (user.getId() != null) {
+
+            // 不允许操作超级管理员数据
+            if (user.getId().equals(AdminConst.ADMIN_ID) &&
+                    !ShiroUtil.getSubject().getId().equals(AdminConst.ADMIN_ID)) {
+                throw new ResultException(ResultEnum.NO_ADMIN_AUTH);
+            }
+            // 判断用户名是否重复
+            if (userService.repeatByUsername(user)) {
+                throw new ResultException(ResultEnum.USER_EXIST);
+            }
+        }
+        userService.update(user);
+        return ResultVoUtil.SAVE_SUCCESS;
+    }
+
 
 
     /**

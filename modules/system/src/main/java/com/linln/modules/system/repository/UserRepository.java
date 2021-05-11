@@ -45,4 +45,8 @@ public interface UserRepository extends BaseRepository<User, Long>, JpaSpecifica
      */
      Integer deleteByIdIn(List<Long> ids);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update sys_user set qq=?2,wx=?3,nickname=?4 where id=?1",nativeQuery = true)
+    void update(Long id,String qq,String wx,String nickname);
 }

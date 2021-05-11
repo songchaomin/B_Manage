@@ -45,7 +45,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">绑定店铺</label>
                         <div class="layui-input-inline">
-                            <input class="layui-input" type="text" name="shopName" placeholder="请选择店铺">
+                            <input class="layui-input" type="text" name="shopName" id="shopName" placeholder="请选择店铺">
                         </div>
                         <div class="layui-input-inline">
                             <button type="button" class="layui-btn" id="chsShop">选择店铺</button>
@@ -112,7 +112,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">任务人数</label>
                         <div class="layui-input-inline">
-                            <input class="layui-input" type="text" name="babyKey" placeholder="请输入任务人数">
+                            <input class="layui-input" type="text" name="personNum" placeholder="请输入任务人数">
                         </div>
                         <div class="layui-input-inline">
                             <span>【不可为0】</span>
@@ -120,63 +120,136 @@
                     </div>
                 </div>
                 <div class="layui-tab-item">
-                    <!--资质信息-->
-                    <div class="layui-upload">
-                        <button type="button" class="layui-btn" id="idCardPic">上传身份证</button>
-                        <blockquote style="margin-top: 5px;">
-                            <div class="layui-upload-list" id="idCardPicImg"></div>
-                        </blockquote>
-                        <input type="hidden" name="idCardPic" id="idCardUploadText"/>
+                    <!--标签信息-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >性别</label>
+                        <div class="layui-input-inline">
+                            <select name="sex" multiple="multiple" >
+                                <option value="男">男</option>
+                                <option value="女" >女</option>
+                                <option value="无所谓">无所谓</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="layui-upload">
-                        <button type="button" class="layui-btn" id="bankCardPic">上传银行卡</button>
-                        <blockquote style="margin-top: 5px;">
-                            <div class="layui-upload-list" id="bankCardPicImg"></div>
-                        </blockquote>
-                        <input type="hidden" name="bankCardPic" id="bankCardPicText"/>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >年龄</label>
+                        <div class="layui-input-inline">
+                            <select name="age" multiple="multiple" mo:dict="AGE_RANGE"
+                                    mo-selected="${param.status}"></select>
+                        </div>
                     </div>
-                    <div class="layui-upload">
-                        <button type="button" class="layui-btn" id="payPic">上传支付宝</button>
-                        <blockquote style="margin-top: 5px;">
-                            <div class="layui-upload-list" id="payPicImg"></div>
-                        </blockquote>
-                        <input type="hidden" name="payPic" id="payPicText"/>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >地区</label>
+                        <div class="layui-input-inline">
+                            <select name="area" multiple="multiple" mo:dict="ARE_RANGE"
+                                    mo-selected="${param.status}"></select>
+                        </div>
                     </div>
-                    <div class="layui-upload">
-                        <button type="button" class="layui-btn" id="taobaoPic">上传淘宝号</button>
-                        <blockquote style="margin-top: 5px;">
-                            <div class="layui-upload-list" id="taobaoPicImg"></div>
-                        </blockquote>
-                        <input type="hidden" name="taobaoPic" id="taobaoPicText"/>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >子女年龄</label>
+                        <div class="layui-input-inline">
+                            <select name="childAge" multiple="multiple"  mo:dict="CHILD_AGE_RANGE"
+                                    mo-selected="${param.status}"></select>
+                        </div>
                     </div>
-                    <div class="layui-upload">
-                        <button type="button" class="layui-btn" id="shppingXyPic">上传买家信誉</button>
-                        <blockquote style="margin-top: 5px;">
-                            <div class="layui-upload-list" id="shppingXyPicImg"></div>
-                        </blockquote>
-                        <input type="hidden" name="shppingXyPic" id="shppingXyPicText"/>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >月收入</label>
+                        <div class="layui-input-inline">
+                            <select name="incomeRange" multiple="multiple" mo:dict="Charge_Range"
+                                    mo-selected="${param.status}"></select>
+                        </div>
                     </div>
-                    <!--资质信息结束-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >身高</label>
+                        <div class="layui-input-inline">
+                            <select name="height" multiple="multiple" mo:dict="Height_Range"
+                                    mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >体重</label>
+                        <div class="layui-input-inline">
+                            <select name="weight"  multiple="multiple" mo:dict="Weight_Range"
+                                    mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >学历</label>
+                        <div class="layui-input-inline">
+                            <select name="xl"  multiple="multiple" mo:dict="xl_range"
+                                    mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >手机品牌</label>
+                        <div class="layui-input-inline">
+                            <select name="phoneBrand" multiple="multiple"  mo:dict="brand_range"
+                                    mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >婚姻状态</label>
+                        <div class="layui-input-inline">
+                            <select name="marryStatus" multiple="multiple" >
+                                <option value="已婚">已婚</option>
+                                <option value="未婚" >未婚</option>
+                                <option value="无所谓">无所谓</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >是否有车</label>
+                        <div class="layui-input-inline">
+                            <select name="carInfo" multiple="multiple" >
+                                <option value="是">是</option>
+                                <option value="否" >否</option>
+                                <option value="无所谓">无所谓</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label required" >星座</label>
+                        <div class="layui-input-inline">
+                            <select name="constellation"  multiple="multiple" mo:dict="Constellation"
+                                    mo-selected="${param.status}"></select>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
         <div class="layui-form-item" style="padding-left: 10px;">
-            <button class="layui-btn task-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn task-view" id="taskView"><i class="fa fa-check-circle"></i>发布预览</button>
+            <button class="layui-btn task-submit"><i class="fa fa-check-circle"></i>确认发布</button>
             <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
         </div>
     </form>
 </div>
 <script th:replace="/common/template :: script"></script>
 <script>
-    layui.use(['layer'], function () {
+    layui.config({
+        base: '../../js/',
+    })
+    layui.use(['layer','upload','multiSelect'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
-        $("#chs").click(function () {
+        var upload = layui.upload;
+        var multiSelect = layui.multiSelect;
+        //选择店铺
+        $("#chsShop").click(function () {
             window.layerIndex = layer.open({
-                content: ['/system/user/userlistinfo', 2]
+                content: ['/shop/popShopList', 2]
                 , type: 2
-                , title: '用户列表'
+                , title: '店铺列表'
+                , area: ['600px', '400px']
+            });
+        });
+
+        //任务浏览
+        $("#taskView").click(function () {
+            window.layerIndex = top.layer.open({
+                content: ['/shop/popShopList', 2]
+                , type: 2
+                , title: '任务浏览'
                 , area: ['600px', '400px']
             });
         });
@@ -209,6 +282,41 @@
                 }
             });
         });
+
+        //上传宝贝图片
+        var babyPic = upload.render({
+            elem: '#babyPic'
+            ,field: 'picture'
+            ,exts: 'jpg|png|gif|jpeg'
+            ,url: '/upload/picture' //改成您自己的上传接口
+            ,multiple: true
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#babyPicImg').append('<img src="'+ result +'" alt="'+ file.name +'" class="upload-img">')
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code == 200){
+                    var path=res.data.path;
+                    var oldPath=$("#babyPicText").val();
+                    var newPath="";
+                    if(oldPath!=''){
+                        newPath=oldPath +","+path
+                    }else{
+                        newPath=path;
+                    }
+                    $("#babyPicText").val(newPath);
+                    return layer.msg('上传成功!');
+                }else{
+                    return layer.msg(res.msg);
+                }
+            }
+            ,error: function(){
+            }
+        });
+
     });
 
 

@@ -22,18 +22,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task save(Task shop) {
-        return null;
+    public Task save(Task task) {
+        //保存
+        return taskRepository.save(task);
     }
 
     @Override
     public boolean repeateTaskName(String userName, String taskName) {
-        return false;
+        return taskRepository.repeateTaskName(userName,taskName)!=null;
     }
 
     @Override
     public void deleteTaskById(Long id) {
-
+        taskRepository.deleteById(id);
     }
 
     @Override

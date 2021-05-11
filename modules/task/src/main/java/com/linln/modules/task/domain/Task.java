@@ -106,7 +106,7 @@ public class Task implements Serializable {
     /**
      * 是否有车1'
      */
-    private Byte carInfo;
+    private String carInfo;
     /**
      * 星座'
      */
@@ -119,22 +119,26 @@ public class Task implements Serializable {
      * 更新时间
      */
     private Date updateDate;
-    /**
-     * 是否活动
-     */
-    private Byte effective;
+
     /**
      * 是否删除
      */
     private Byte deleteFlg;
 
     /**
-     * 商户Id
-     */
-    private Long merchantId;
+     * 用户编号
+     * */
+    private String userName;
 
     /**
-     * 任务状态 1:新增
+     * 任务状态 1:待审核 2:已审核 3:进行中 4：待付款 5：已完成
      */
     private Byte taskStatus;
+
+
+    /**
+     * 发布状态  0:待发布 1：已发布
+     */
+    private Byte effective;
+
 }

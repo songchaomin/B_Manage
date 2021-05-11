@@ -147,4 +147,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.updateStatus(statusEnum.getCode(), ids) > 0;
     }
 
+    @Override
+    public void update(User user) {
+        userRepository.update(user.getId(),user.getQq(),user.getWx(),user.getNickname());
+    }
 }

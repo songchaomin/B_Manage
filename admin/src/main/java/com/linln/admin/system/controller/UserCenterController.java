@@ -56,6 +56,10 @@ public class UserCenterController {
     public String getIntegral(Model model) {
         User user = ShiroUtil.getSubject();
         Integral integral = integralService.getIntegralByUserName(user.getUsername());
+        if (integral==null){
+            integral=new Integral();
+            integral.setPoint(0);
+        }
         model.addAttribute("integral", integral);
         return "/userCenter/integral";
     }

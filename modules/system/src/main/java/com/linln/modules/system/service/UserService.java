@@ -66,5 +66,5 @@ public interface UserService {
     Boolean updateStatus(StatusEnum statusEnum, List<Long> idList);
 
 
-
+    void update(User user);
 }

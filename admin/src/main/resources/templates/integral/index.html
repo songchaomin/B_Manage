@@ -36,7 +36,7 @@
             </div>
             <div class="pull-right screen-btn-group">
                 <button class="layui-btn open-popup" data-title="添加积分" th:attr="data-url=@{/integral/add}"
-                        shiro:hasPermission="integral:add" data-size="615,558">
+                        shiro:hasPermission="integral:add" data-size="700,650">
                     <i class="fa fa-plus"></i> 添加
                 </button>
             </div>
@@ -49,7 +49,7 @@
                         <label class="timo-checkbox"><input type="checkbox">
                             <i class="layui-icon layui-icon-ok"></i></label>
                     </th>
-                    <th class="sortable" data-field="userName">商户名称</th>
+                    <th class="sortable" data-field="userName">商户编号</th>
                     <th class="sortable" data-field="point">积分</th>
                     <th class="sortable" data-field="createDate">创建时间</th>
                     <th>操作</th>
@@ -59,7 +59,7 @@
                 <tr th:each="item:${list}">
                     <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.id}">
                         <i class="layui-icon layui-icon-ok"></i></label></td>
-                    <td th:text="${item.userName}">商户名称</td>
+                    <td th:text="${item.userName}">商户编号</td>
                     <td th:text="${item.point}">积分</td>
                     <td th:text="${item.createDate}">创建时间</td>
                     <td>
