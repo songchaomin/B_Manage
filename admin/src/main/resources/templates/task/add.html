@@ -24,6 +24,7 @@
                 <li>任务标签</li>
             </ul>
             <div class="layui-tab-content" style="background-color: white;">
+                <input type="hidden" name="id" id="idkey">
                 <div class="layui-tab-item layui-show">
                     <!--基本信息-->
                     <div class="layui-form-item">
@@ -45,7 +46,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label required">绑定店铺</label>
                         <div class="layui-input-inline">
-                            <input class="layui-input" type="text" name="shopName" id="shopName" placeholder="请选择店铺">
+                            <input class="layui-input" type="text" name="shopName" id="shopName" readonly placeholder="请选择店铺">
                         </div>
                         <div class="layui-input-inline">
                             <button type="button" class="layui-btn" id="chsShop">选择店铺</button>
@@ -218,9 +219,9 @@
             </div>
         </div>
         <div class="layui-form-item" style="padding-left: 10px;">
-            <button class="layui-btn task-view" id="taskView"><i class="fa fa-check-circle"></i>发布预览</button>
-            <button class="layui-btn task-submit"><i class="fa fa-check-circle"></i>确认发布</button>
-            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+            <button class="layui-btn task-submit" id="taskView"><i class="fa fa-check-circle"></i>发布预览</button>
+            <button class="layui-btn task-update"><i class="fa fa-check-circle"></i>确认发布</button>
+            <button class="layui-btn btn-secondary close-task"><i class="fa fa-times-circle"></i> 关闭</button>
         </div>
     </form>
 </div>
@@ -245,20 +246,51 @@
         });
 
         //任务浏览
-        $("#taskView").click(function () {
+       /* $("#taskView").click(function () {
             window.layerIndex = top.layer.open({
                 content: ['/shop/popShopList', 2]
                 , type: 2
                 , title: '任务浏览'
                 , area: ['600px', '400px']
             });
-        });
+        });*/
 
         /* 提交表单数据 */
         $(document).on("click", ".task-submit", function (e) {
             e.preventDefault();
             var form = $(this).parents("form");
             var url = form.attr("action");
+            var serializeArray = form.serializeArray();
+            $.post(url, serializeArray, function (result) {
+                if (result.data == null) {
+                    layer.msg(result.msg, {offset: '15px', time: 3000, icon: 1});
+                }
+                if (result.code === 200) {
+                    var id=result.data.id;
+                    $("#idkey").val(id);
+                    if (id){
+                        window.layerIndex = top.layer.open({
+                            content: ['/task/detail/'+id, 2]
+                            , type: 2
+                            , title: '任务浏览'
+                            , area: ['600px', '400px']
+                        });
+                    }
+                }
+            });
+        });
+
+
+
+        $(document).on("click", ".close-task", function (e) {
+            parent.location.reload();
+        });
+
+        /* 更新表单数据 */
+        $(document).on("click", ".task-update", function (e) {
+            e.preventDefault();
+            var form = $(this).parents("form");
+            var url = "/task/update";
             var serializeArray = form.serializeArray();
             $.post(url, serializeArray, function (result) {
                 if (result.data == null) {

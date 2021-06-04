@@ -3,49 +3,204 @@
       xmlns:mo="https://gitee.com/aun/Timo">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
 </head>
+<style>
+    .layui-form .layui-form-item .layui-form-label {
+        width: 140px;
+    }
+
+    .upload-img {
+        width: 80px;
+        height: 80px;
+        border: 0;
+        padding-right: 2px;
+    }
+</style>
 <body>
     <div class="timo-detail-page">
-        <div class="timo-detail-title">基本信息</div>
-        <table class="layui-table timo-detail-table">
-            <tbody>
-            <tr>
-                <th width='100px'>字典编号</th>
-                <td th:text="${dict.id}"></td>
-                <th width='100px'>字典标识</th>
-                <td th:text="${dict.name}"></td>
-            </tr>
-            <tr>
-                <th width='100px'>字典标题</th>
-                <td th:text="${dict.title}"></td>
-                <th width='100px'>字典类型</th>
-                <td th:text="${#dicts.keyValue('DICT_TYPE', dict.type)}">字典类型</td>
-            </tr>
-            <tr>
-                <th>字典值</th>
-                <td colspan="4">
-                    <div class="detail-remark">[[${dict.value}]]</div>
-                </td>
-            </tr>
-            <tr>
-                <th>创建用户</th>
-                <td th:text="${dict.createBy?.nickname}"></td>
-                <th>更新用户</th>
-                <td th:text="${dict.updateBy?.nickname}"></td>
-            </tr>
-            <tr>
-                <th>创建时间</th>
-                <td th:text="${#dates.format(dict.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <th>最后修改</th>
-                <td th:text="${#dates.format(dict.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-            </tr>
-            <tr>
-                <th>备注</th>
-                <td th:text="${dict.remark}" colspan="4"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div th:replace="/common/fragment :: log(${dict})"></div>
+        <div class="layui-form timo-compile" style="margin: 0 auto;width: 750px;padding-top: 5px;">
+            <form >
+                <div class="layui-tab layui-tab-card">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">任务基本信息</li>
+                        <li>任务标签</li>
+                    </ul>
+                    <div class="layui-tab-content" style="background-color: white;">
+                        <div class="layui-tab-item layui-show">
+                            <!--基本信息-->
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">任务名称</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="taskName" th:value="${task.taskName}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">任务类型</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="taskType" th:value="${task.taskType}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">绑定店铺</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="shopName" th:value="${task.shopName}" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">宝贝链接</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="babyLink" th:value="${task.babyLink}" >
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">宝贝关键字</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="babyKey" th:value="${task.babyKey}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">宝贝规格(毛重)</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="babySpec" th:value="${task.babySpec}">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <span>克</span>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">宝贝本金(元)</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="babyPrice" th:value="${task.babyPrice}">
+                                </div>
+
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">是否关注店铺</label>
+                                <div class="layui-input-inline">
+                                    <div  th:switch="${task.attentionStoreFlag}">
+                                        <input class="layui-input" type="text" name="attentionStoreFlag" th:case="0" th:value="否">
+                                        <input class="layui-input" type="text" name="attentionStoreFlag" th:case="1" th:value="是">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">是否收藏宝贝</label>
+                                <div class="layui-input-inline">
+                                    <div  th:switch="${task.collectBabyFlag}">
+                                        <input class="layui-input" type="text" name="collectBabyFlag" th:case="0" th:value="否">
+                                        <input class="layui-input" type="text" name="collectBabyFlag" th:case="1" th:value="是">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-upload">
+                                    <label class="layui-form-label required">宝贝主图</label>
+                                    <div class="layui-input-inline">
+                                        <blockquote style="margin-top: 5px;">
+                                            <div class="layui-upload-list"  id="babyPics">
+                                                <img th:src="@{${s}}" th:each="s:${babyPic}" class="upload-img">
+                                            </div>
+                                            <div class="layui-upload-list" id="babyPicImg"></div>
+                                        </blockquote>
+                                        <input type="hidden" name="babyPic" id="babyPicText"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">任务人数</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="personNum" th:value="${task.babyPrice}">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <span>【不可为0】</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <!--标签信息-->
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >性别</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="sex" th:value="${task.sex}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >年龄</label>
+                                <div class="layui-input-inline">
+                                    <div class="layui-input-inline">
+                                        <input class="layui-input" type="text" name="age" th:value="${task.age}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >地区</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="area" th:value="${task.area}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >子女年龄</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="childAge" th:value="${task.childAge}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >月收入</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="incomeRange" th:value="${task.incomeRange}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >身高</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="height" th:value="${task.height}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >体重</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="weight" th:value="${task.weight}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >学历</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="xl" th:value="${task.xl}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >手机品牌</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="phoneBrand" th:value="${task.phoneBrand}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >婚姻状态</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="marryStatus" th:value="${task.marryStatus}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >是否有车</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="carInfo" th:value="${task.carInfo}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required" >星座</label>
+                                <div class="layui-input-inline">
+                                    <input class="layui-input" type="text" name="constellation" th:value="${task.constellation}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 <script th:replace="/common/template :: script"></script>
+<script>
+
+</script>
 </body>
 </html>

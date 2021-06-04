@@ -75,9 +75,10 @@
                     <td th:text="${item.personNum}">任务人数</td>
                     <td th:switch="${item.taskStatus}">
                         <span  th:case="1" th:text="待审核" ></span>
-                        <span  th:case="2" th:text="进行中" ></span>
-                        <span  th:case="3" th:text="待付款" ></span>
-                        <span  th:case="4" th:text="已完成" ></span>
+                        <span  th:case="2" th:text="已审核" ></span>
+                        <span  th:case="3" th:text="进行中" ></span>
+                        <span  th:case="4" th:text="待付款" ></span>
+                        <span  th:case="5" th:text="已完成" ></span>
                     </td>
                     <td th:switch="${item.effective}">
                         <span  th:case="0" th:text="待发布" ></span>
@@ -87,10 +88,9 @@
                     <td>
                         <a class="ajax-get" data-msg="是否审核" th:href="@{'/task/audit/'+${item.id}}"
                            shiro:hasPermission="task:audit">审核</a>
-                        <a class="open-popup" data-title="浏览任务" th:attr="data-url=@{'/task/audit/'+${item.id}}"
-                           shiro:hasPermission="task:audit"
+                        <a class="open-popup" data-title="浏览任务" th:attr="data-url=@{'/task/detail/'+${item.id}}"
+                           shiro:hasPermission="task:detail"
                            data-size="615,558" href="#">详细</a>
-
                         <a class="open-popup" data-title="编辑任务" th:attr="data-url=@{'/task/edit/'+${item.id}}"
                            shiro:hasPermission="task:edit"
                            data-size="615,558" href="#">编辑</a>

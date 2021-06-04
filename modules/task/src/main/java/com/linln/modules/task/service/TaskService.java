@@ -1,5 +1,6 @@
 package com.linln.modules.task.service;
 
+import com.linln.common.vo.ResultVo;
 import com.linln.modules.task.domain.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -27,4 +28,9 @@ public interface TaskService {
     Task getTaskById(Long id);
 
 
+    void auditTaskById(Long id);
+
+    Page<Task> getPageList2C(String cUser);
+
+    ResultVo robOrder(String task);
 }

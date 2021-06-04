@@ -25,10 +25,13 @@ import com.linln.modules.system.domain.User;
 import com.linln.modules.system.repository.UserRepository;
 import com.linln.modules.system.service.RoleService;
 import com.linln.modules.system.service.UserService;
+import com.linln.modules.task.domain.Shop;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -65,10 +68,8 @@ public class UserController {
     @GetMapping("/index")
     @RequiresPermissions("system:user:index")
     public String index(Model model, User user) {
-
         // 获取用户列表
         Page<User> list = userService.getPageList(user);
-
         // 封装数据
         model.addAttribute("list", list.getContent());
         model.addAttribute("page", list);
@@ -79,6 +80,10 @@ public class UserController {
     @GetMapping("/userlistinfo")
     public String userlistinfo(Model model, User user) {
         // 获取用户列表
+        User sessionUser = ShiroUtil.getSubject();
+        if (!Objects.equals(sessionUser.getUsername(),"admin")) {
+            user.setUsername(sessionUser.getUsername());
+        }
         Page<User> list = userService.getPageList(user);
         // 封装数据
         model.addAttribute("list", list.getContent());

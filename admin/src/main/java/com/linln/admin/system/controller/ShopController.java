@@ -54,7 +54,6 @@ public class ShopController {
     }
 
     @GetMapping("/popShopList")
-    @RequiresPermissions("shop:popShopList")
     public String popShopList(Model model, Shop shop){
         User user = ShiroUtil.getSubject();
         if (!Objects.equals(user.getUsername(),"admin")) {
@@ -78,7 +77,12 @@ public class ShopController {
      */
     @GetMapping("/add")
     @RequiresPermissions("shop:add")
-    public String toAdd(){
+    public String toAdd( Model model){
+        User user = ShiroUtil.getSubject();
+        if (!Objects.equals(user.getUsername(),"admin")) {
+            model.addAttribute("adminFlg",0);
+            model.addAttribute("userName",user.getUsername());
+        }
         return "/shop/add";
     }
 
