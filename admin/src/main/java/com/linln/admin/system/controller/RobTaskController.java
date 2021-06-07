@@ -44,7 +44,7 @@ public class RobTaskController {
     @ResponseBody
     public ResultVo delete(@PathVariable("id") Long id, Model model){
         robTaskService.delRobTaskById(id);
-        return  ResultVoUtil.SAVE_SUCCESS;
+        return  ResultVoUtil.success("审核成功");
     }
 
     @GetMapping("/auditAccount/{id}")
@@ -52,7 +52,7 @@ public class RobTaskController {
     @ResponseBody
     public ResultVo auditAccount(@PathVariable("id") Long id, Model model){
         robTaskService.changeRobTaskStatus(id,4);
-        return  ResultVoUtil.SAVE_SUCCESS;
+        return  ResultVoUtil.success("审核成功");
     }
 
     @GetMapping("/deliver/{id}")
