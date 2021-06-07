@@ -39,6 +39,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
+    @Override
+    public Page<RobTask> merchantGetRobTaskList(Example<RobTask> example) {
+        PageRequest page = PageSort.pageRequest(Sort.Direction.ASC);
+        return robTaskRepository.findAll(example, page);
+    }
+
+
+
 
     @Override
     public Task save(Task task) {
@@ -84,7 +92,7 @@ public class TaskServiceImpl implements TaskService {
                     preList.add(cb.like(root.get("height").as(String.class), "%"+ user.getHeightRange() + "%"));
                 }
                 List<Predicate> preListand = new ArrayList<>();
-                preListand.add(cb.lessThanOrEqualTo(root.get("taskStatus").as(Integer.class),3));
+                preListand.add(cb.greaterThanOrEqualTo(root.get("taskStatus").as(Integer.class),3));
                 Predicate[] pres = new Predicate[preList.size()];
                 Predicate or = cb.or(preList.toArray(pres));
 
@@ -93,6 +101,23 @@ public class TaskServiceImpl implements TaskService {
                 return query.where(or,and).getRestriction();
             }
         }, page);
+    }
+
+    @Override
+    public Page<RobTask> getRobTaskByUserName(String userName,int page,int limit) {
+        PageRequest pageRequest =PageRequest.of(page-1,limit);
+        return robTaskRepository.findAll(new Specification<RobTask>() {
+            @Override
+            public Predicate toPredicate(Root<RobTask> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> preList = new ArrayList<>();
+                if(userName != null){
+                    preList.add(cb.equal(root.get("cUserName").as(String.class), userName));
+                }
+                Predicate[] presand = new Predicate[preList.size()];
+                Predicate and = cb.and(preList.toArray(presand));
+                return query.where(and).getRestriction();
+            }
+        }, pageRequest);
     }
 
     @Override
@@ -124,6 +149,11 @@ public class TaskServiceImpl implements TaskService {
         robTask.setCUserName(cTask.getCUserName());
         robTask.setCNickName(cTask.getCNickName());
         robTask.setCreateDate(new Date());
+        robTask.setWangwangId(cTask.getWangwangId());
+        robTask.setQq(cTask.getQq());
+        robTask.setRobTaskStatus("4");
+        robTask.setMerchantId(cTask.getMerchantId());
+        robTask.setMerchantName(cTask.getMerchantName());
         robTaskRepository.save(robTask);
         return ResultVoUtil.success("抢单成功！");
     }

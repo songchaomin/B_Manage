@@ -210,6 +210,47 @@ layui.use(['element', 'form', 'layer', 'upload'], function () {
         }
     });
 
+    /* get方式异步 */
+    $(document).on("click", ".ajax-auditAccount", function (e) {
+        e.preventDefault();
+        var msg = $(this).data("msg");
+        if (msg !== undefined) {
+            layer.confirm(msg + '？', {
+                title: '提示',
+                btn: ['通过', '不通过']
+            }, function () {
+                $.get(e.target.href, function (result) {
+                    $.fn.Messager(result);
+                });
+            });
+        } else {
+            $.get(e.target.href, function (result) {
+                $.fn.Messager(result);
+            });
+        }
+    });
+
+
+    /* get方式异步 */
+    $(document).on("click", ".ajax-deliver", function (e) {
+        e.preventDefault();
+        var msg = $(this).data("msg");
+        if (msg !== undefined) {
+            layer.confirm(msg + '？', {
+                title: '提示',
+                btn: ['通过', '不通过']
+            }, function () {
+                $.get(e.target.href, function (result) {
+                    $.fn.Messager(result);
+                });
+            });
+        } else {
+            $.get(e.target.href, function (result) {
+                $.fn.Messager(result);
+            });
+        }
+    });
+
     // post方式异步-操作状态
     $(".ajax-status").on("click", function (e) {
         e.preventDefault();

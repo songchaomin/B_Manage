@@ -1,5 +1,7 @@
 package com.linln.admin.system.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.linln.admin.system.domain.RobTaskRequest;
 import com.linln.admin.system.validator.TaskValid;
 import com.linln.common.enums.ResultEnum;
 import com.linln.common.exception.ResultException;
@@ -10,6 +12,7 @@ import com.linln.component.actionLog.annotation.ActionLog;
 import com.linln.component.actionLog.annotation.EntityParam;
 import com.linln.component.shiro.ShiroUtil;
 import com.linln.modules.system.domain.User;
+import com.linln.modules.task.domain.RobTask;
 import com.linln.modules.task.domain.Task;
 import com.linln.modules.task.service.TaskService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,7 +26,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -37,7 +39,7 @@ public class TaskController {
     public String index(Model model, Task task){
         User user = ShiroUtil.getSubject();
         if (!Objects.equals(user.getUsername(),"admin")) {
-            task.setUserName(user.getUsername());
+            task.setMerchantName(user.getUsername());
         }
         // 创建匹配器，进行动态查询匹配
         ExampleMatcher matcher = ExampleMatcher.matching().
@@ -50,6 +52,32 @@ public class TaskController {
         model.addAttribute("page", list);
         return "/task/index";
     }
+
+
+    /**
+     * 商户查看已抢单列表
+     * @param model
+     * @return
+     */
+    @GetMapping("/viewRobTask")
+    @RequiresPermissions("view:robTask")
+    public String viewRobTask(Model model, RobTask robTask){
+        User user = ShiroUtil.getSubject();
+        if (!Objects.equals(user.getUsername(),"admin")) {
+            robTask.setMerchantName(user.getUsername());
+        }
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching().
+                withMatcher("merchantName", match -> match.contains());
+
+        Example<RobTask> example = Example.of(robTask, matcher);
+        Page<RobTask> list = taskService.merchantGetRobTaskList(example);
+        // 封装数据
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
+        return "/robTask/viewRobTask";
+    }
+
 
     /**
      * 跳转到添加页面
@@ -69,6 +97,18 @@ public class TaskController {
     public Page<Task> task2c(@RequestBody String  cUser) {
         // 获取用户列表
         Page<Task> list = taskService.getPageList2C(cUser);
+        return list;
+    }
+
+    /**
+     * C端已抢单任务
+     */
+    @PostMapping("/myRobTask")
+    @ResponseBody
+    public Page<RobTask> myRobTask(@RequestBody String  robTask) {
+        RobTaskRequest robTaskRequest=JSONObject.parseObject(robTask,RobTaskRequest.class);
+        // 获取用户列表
+        Page<RobTask> list = taskService.getRobTaskByUserName(robTaskRequest.getUserName(),robTaskRequest.page,robTaskRequest.getLimit());
         return list;
     }
 
@@ -101,7 +141,8 @@ public class TaskController {
         task.setUpdateDate(new Date());
         task.setDeleteFlg((byte)0);
         //用户编号
-        task.setUserName(user.getUsername());
+        task.setMerchantName(user.getUsername());
+        task.setMerchantId(user.getId());
         task.setTaskStatus((byte)1);
 
         task.setEffective((byte)0);
@@ -137,7 +178,8 @@ public class TaskController {
             task.setUpdateDate(new Date());
             task.setDeleteFlg((byte)0);
             //用户编号
-            task.setUserName(user.getUsername());
+            task.setMerchantName(user.getUsername());
+            task.setMerchantId(user.getId());
             task.setTaskStatus((byte)1);
             task.setEffective((byte)0);
         }

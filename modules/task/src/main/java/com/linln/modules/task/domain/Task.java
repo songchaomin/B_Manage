@@ -126,12 +126,14 @@ public class Task implements Serializable {
     private Byte deleteFlg;
 
     /**
-     * 用户编号
+     * 商户编号
      * */
-    private String userName;
+    private String merchantName;
+    private Long merchantId;
+
 
     /**
-     * 任务状态 1:待审核 2:已审核 3:进行中 4：待付款 5：已完成
+     * 任务状态 1:待审核 2:已审核 3:进行中 4：待付款 5：已付款 6：已发货 7：已完成
      */
     private Byte taskStatus;
 

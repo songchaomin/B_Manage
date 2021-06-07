@@ -14,4 +14,12 @@ public interface RobTaskRepository extends BaseRepository<RobTask,Long>, JpaSpec
 
     @Query(value = "select count(1)  from rob_task  where c_user_id=?1 and task_id=?2",nativeQuery = true)
     int queryRobTaskReapter(Long cUserId, Long id);
+
+    @Query(value = "select * from rob_task where user_name=?1 ",nativeQuery = true)
+    Task queryTaskByUserName(String userName);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update  rob_task set rob_task_stauts= ?2  where id=?1 ",nativeQuery = true)
+    void changeRobTaskStatus(Long id, int i);
 }

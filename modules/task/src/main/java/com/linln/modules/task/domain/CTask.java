@@ -144,4 +144,9 @@ public class CTask implements Serializable {
 
     private  String wangwangId;
 
+    private String qq;
+
+    private String merchantName;
+    private Long merchantId;
+
 }
