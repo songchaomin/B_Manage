@@ -55,6 +55,7 @@ public class ShiroConfig {
         filterMap.put("/task/2cTaskList", "anon");
         filterMap.put("/task/robOrder", "anon");
         filterMap.put("/task/myRobTask", "anon");
+        filterMap.put("/upload/image", "anon");
         filterMap.put("/logout", "anon");
         filterMap.put("/captcha", "anon");
         filterMap.put("/noAuth", "anon");
@@ -64,6 +65,7 @@ public class ShiroConfig {
         filterMap.put("/lib/**", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/upload/picture", "anon");
+        filterMap.put("/upload/picture/**", "anon");
         // 通过yml配置文件方式配置的[anon]忽略规则
         String[] excludes = properties.getExcludes().split(",");
         for (String exclude : excludes) {
