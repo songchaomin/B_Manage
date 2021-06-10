@@ -54,6 +54,7 @@ public class Task implements Serializable {
      * 是否收藏宝贝
      */
     private Byte collectBabyFlag;
+
     /**
      * 宝贝图片
      */

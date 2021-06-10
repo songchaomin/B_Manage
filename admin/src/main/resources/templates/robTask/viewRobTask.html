@@ -50,6 +50,7 @@
                     <th class="sortable" data-field="wangwangId">旺旺号</th>
                     <th class="sortable" data-field="qq">QQ</th>
                     <th class="sortable" data-field="robTaskStatus">任务状态</th>
+                    <th class="sortable" data-field="payPicUrl">任务凭证</th>
                     <th class="sortable" data-field="createDate">抢单时间</th>
                     <th>操作</th>
                 </tr>
@@ -73,14 +74,15 @@
                         <span  th:case="6" th:text="已发货" ></span>
                         <span  th:case="7" th:text="已完成" ></span>
                     </td>
+                    <td><img th:src="${item.payPicUrl}" style="width:100px;height:100px;"></td>
 
                     <td th:text="${item.createDate}">抢单时间</td>
                     <td>
                         <a th:if="${item.robTaskStatus} eq 3" class="ajax-auditAccount" data-msg="确认抢单账号是否通过"
-                           shiro:hasPermission="robTask:auditAccount" th:href="@{'/robTask/auditAccount/'+${item.id}}">审核账号</a>
+                           shiro:hasPermission="robTask:auditAccount" th:href="@{'/robTask/auditAccount/'+${item.id}}">确认账户</a>
                         <a th:if="${item.robTaskStatus} eq 5" class="ajax-deliver" data-msg="确认付款凭证是否真实有效"
                            shiro:hasPermission="robTask:deliver"
-                          th:href="@{'/robTask/deliver/'+${item.id}}">审核凭证</a>
+                          th:href="@{'/robTask/deliver/'+${item.id}}">确认截图并发货</a>
                         <a class="ajax-get" data-msg="您是否确认删除" th:href="@{'/robTask/delete/'+${item.id}}"
                            shiro:hasPermission="robTask:delete">删除</a>
                     </td>

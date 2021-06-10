@@ -55,6 +55,7 @@ public class ShiroConfig {
         filterMap.put("/task/2cTaskList", "anon");
         filterMap.put("/task/robOrder", "anon");
         filterMap.put("/task/myRobTask", "anon");
+        filterMap.put("/robTask/updateRobTask", "anon");
         filterMap.put("/upload/image", "anon");
         filterMap.put("/logout", "anon");
         filterMap.put("/captcha", "anon");

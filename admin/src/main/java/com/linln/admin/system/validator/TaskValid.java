@@ -87,12 +87,10 @@ public class TaskValid implements Serializable {
     /**
      * 任务标签-地区
      */
-    @NotEmpty(message = "地区不能为空")
     private String area;
     /**
      * 任务标签-婚姻状态
      */
-    @NotEmpty(message = "婚姻状态不能为空")
     private String marryStatus;
     /**
      * 子女年龄
@@ -132,7 +130,6 @@ public class TaskValid implements Serializable {
     /**
      * 星座'
      */
-    @NotEmpty(message = "星座不能为空")
     private String constellation;
     /**
      * 创建时间

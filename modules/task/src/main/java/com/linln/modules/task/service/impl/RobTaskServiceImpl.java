@@ -1,5 +1,6 @@
 package com.linln.modules.task.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.linln.common.vo.ResultVo;
 import com.linln.modules.task.domain.RobTask;
 import com.linln.modules.task.repository.RobTaskRepository;
@@ -39,5 +40,11 @@ public class RobTaskServiceImpl implements RobTaskService {
     @Override
     public void changeRobTaskStatus(Long id, int i) {
         robTaskRepository.changeRobTaskStatus(id,i);
+    }
+
+    @Override
+    public int updateRobTask(String robTask) {
+        RobTask newRobtask = JSONObject.parseObject(robTask, RobTask.class);
+        return robTaskRepository.updateRobTask(newRobtask.getTaskId(),newRobtask.getPayPicUrl(),5);
     }
 }

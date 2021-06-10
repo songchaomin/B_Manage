@@ -22,4 +22,8 @@ public interface RobTaskRepository extends BaseRepository<RobTask,Long>, JpaSpec
     @Transactional
     @Query(value = "update  rob_task set rob_task_status= ?2  where id=?1 ",nativeQuery = true)
     void changeRobTaskStatus(Long id, int i);
+    @Modifying
+    @Transactional
+    @Query(value = "update  rob_task set pay_pic_url=?2,rob_task_status= ?3  where id=?1 ",nativeQuery = true)
+    int updateRobTask(Long id, String payPicUrl, int i);
 }

@@ -16,4 +16,6 @@ public interface RobTaskService {
     void delRobTaskById(Long id);
 
     void changeRobTaskStatus(Long id, int i);
+
+    int updateRobTask(String robTask);
 }

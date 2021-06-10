@@ -1,6 +1,7 @@
 package com.linln.admin.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.linln.admin.system.config.YamlPropertySourceFactory;
 import com.linln.admin.system.domain.RobTaskRequest;
 import com.linln.admin.system.validator.TaskValid;
 import com.linln.common.enums.ResultEnum;
@@ -17,6 +18,7 @@ import com.linln.modules.task.domain.Task;
 import com.linln.modules.task.service.TaskService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -25,11 +27,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Objects;
 
 @Controller
 @RequestMapping("/task")
+@PropertySource(value = {"classpath:application.yml"},factory = YamlPropertySourceFactory.class)
 public class TaskController {
     @Autowired
     private TaskService taskService;
@@ -130,7 +134,7 @@ public class TaskController {
     @RequiresPermissions({"task:add"})
     @ResponseBody
     @ActionLog(name = "任务管理", message = "任务：${userName}", action = SaveAction.class)
-    public ResultVo save(@Validated TaskValid valid, @EntityParam Task task){
+    public ResultVo save(@Validated TaskValid valid, @EntityParam Task task, HttpServletRequest request){
         User user = ShiroUtil.getSubject();
         //1、任务名称是否重复
        if ( taskService.repeateTaskName(user.getUsername(),task.getTaskName())) {
@@ -167,7 +171,7 @@ public class TaskController {
     @PostMapping({"/update"})
     @RequiresPermissions({"task:update"})
     @ResponseBody
-    public ResultVo update(@Validated TaskValid valid, @EntityParam Task task){
+    public ResultVo update(@Validated TaskValid valid, @EntityParam Task task, HttpServletRequest request){
         User user = ShiroUtil.getSubject();
         //1、任务名称是否重复
         if ( taskService.repeateTaskName(user.getUsername(),task.getTaskName())) {

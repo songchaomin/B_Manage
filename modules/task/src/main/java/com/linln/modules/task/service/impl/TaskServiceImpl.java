@@ -34,7 +34,7 @@ public class TaskServiceImpl implements TaskService {
     private RobTaskRepository robTaskRepository;
     @Override
     public Page<Task> getPageList(Example<Task> example) {
-        PageRequest page = PageSort.pageRequest(Sort.Direction.ASC);
+        PageRequest page = PageSort.pageRequest(Sort.Direction.DESC);
         return taskRepository.findAll(example, page);
     }
 

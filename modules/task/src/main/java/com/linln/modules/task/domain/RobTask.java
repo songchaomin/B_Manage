@@ -46,4 +46,6 @@ public class RobTask implements Serializable {
 
     private Long merchantId;
     private String merchantName;
+
+    private String payPicUrl;
 }

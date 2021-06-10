@@ -18,6 +18,7 @@
 <body>
 <div class="layui-form timo-compile" style="margin: 0 auto;width: 700px;padding-top: 5px;">
     <form th:action="@{/task/add}">
+        <input type="hidden" name="id" th:value="${task.id}">
         <div class="layui-tab layui-tab-card">
             <ul class="layui-tab-title">
                 <li class="layui-this">任务基本信息</li>
