@@ -26,4 +26,7 @@ public interface RobTaskRepository extends BaseRepository<RobTask,Long>, JpaSpec
     @Transactional
     @Query(value = "update  rob_task set pay_pic_url=?2,rob_task_status= ?3  where id=?1 ",nativeQuery = true)
     int updateRobTask(Long id, String payPicUrl, int i);
+
+    @Query(value = "SELECT count(1) FROM rob_task a left join task b on a.task_id=b.id where a.c_user_name=?1 and b.shop_name=?2 and DATE_ADD(a.create_date,INTERVAL ?3 day)>now()",nativeQuery = true)
+    int queryTenDayRobTask(String cUserName, String shopName,int day);
 }

@@ -11,6 +11,7 @@ import com.linln.modules.task.domain.Task;
 import com.linln.modules.task.repository.RobTaskRepository;
 import com.linln.modules.task.repository.TaskRepository;
 import com.linln.modules.task.service.TaskService;
+import org.hibernate.annotations.OrderBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -92,12 +93,13 @@ public class TaskServiceImpl implements TaskService {
                     preList.add(cb.like(root.get("height").as(String.class), "%"+ user.getHeightRange() + "%"));
                 }
                 List<Predicate> preListand = new ArrayList<>();
-                preListand.add(cb.greaterThanOrEqualTo(root.get("taskStatus").as(Integer.class),3));
+                preListand.add(cb.equal(root.get("taskStatus").as(Integer.class),2));
                 Predicate[] pres = new Predicate[preList.size()];
                 Predicate or = cb.or(preList.toArray(pres));
 
                 Predicate[] presand = new Predicate[preListand.size()];
                 Predicate and = cb.and(preListand.toArray(presand));
+                query.orderBy(cb.desc(root.get("createDate")));
                 return query.where(or,and).getRestriction();
             }
         }, page);
@@ -141,6 +143,14 @@ public class TaskServiceImpl implements TaskService {
             resultVo.setMsg("同一个任务只允许抢购一次！");
             return resultVo;
         }
+        //判断同一个店铺是否10天内抢过
+        //查询该用户该店铺所有抢过单的任务
+        int tenDayRobTask=robTaskRepository.queryTenDayRobTask(cTask.getCUserName(), cTask.getShopName(),9);
+        if (tenDayRobTask>=1){
+            resultVo.setCode(0);
+            resultVo.setMsg("抢单失败，请尝试其它任务！");
+            return resultVo;
+        }
         RobTask robTask=new RobTask();
         robTask.setTaskId(cTask.getId());
         robTask.setTaskName(cTask.getTaskName());
@@ -151,7 +161,7 @@ public class TaskServiceImpl implements TaskService {
         robTask.setCreateDate(new Date());
         robTask.setWangwangId(cTask.getWangwangId());
         robTask.setQq(cTask.getQq());
-        robTask.setRobTaskStatus("4");
+        robTask.setRobTaskStatus("3");
         robTask.setMerchantId(cTask.getMerchantId());
         robTask.setMerchantName(cTask.getMerchantName());
         robTaskRepository.save(robTask);
