@@ -39,6 +39,8 @@ public class RobTaskServiceImpl implements RobTaskService {
 
     @Override
     public void changeRobTaskStatus(Long id, int i) {
+        //确认完成增加C端用户的积分
+
         robTaskRepository.changeRobTaskStatus(id,i);
     }
 
@@ -46,5 +48,10 @@ public class RobTaskServiceImpl implements RobTaskService {
     public int updateRobTask(String robTask) {
         RobTask newRobtask = JSONObject.parseObject(robTask, RobTask.class);
         return robTaskRepository.updateRobTask(newRobtask.getTaskId(),newRobtask.getPayPicUrl(),5);
+    }
+
+    @Override
+    public RobTask getRobTaskById(Long id) {
+        return robTaskRepository.getOne(id);
     }
 }

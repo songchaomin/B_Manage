@@ -18,4 +18,6 @@ public interface RobTaskService {
     void changeRobTaskStatus(Long id, int i);
 
     int updateRobTask(String robTask);
+
+    RobTask getRobTaskById(Long id);
 }

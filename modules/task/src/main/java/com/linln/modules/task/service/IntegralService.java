@@ -30,4 +30,6 @@ public interface IntegralService {
     Integer update(Integral integral);
 
     Integral getIntegralByUserName(String username);
+
+    void addIntegral(int point,String userName);
 }

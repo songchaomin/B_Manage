@@ -128,24 +128,18 @@ public class CTask implements Serializable {
      * 任务状态 1:待审核 2:已审核 3:进行中 4：待付款 5：已完成
      */
     private Byte taskStatus;
-
-
     /**
      * 发布状态  0:待发布 1：已发布
      */
     private Byte effective;
-
-
     private Long cUserId;
-
     private String cUserName;
-
     private String cNickName;
-
     private  String wangwangId;
-
+    private String pddId;//  '拼多ID',
+    private String jdId;//  '京东ID',
+    private String dyId;//  '抖音ID',
     private String qq;
-
     private String merchantName;
     private Long merchantId;
 

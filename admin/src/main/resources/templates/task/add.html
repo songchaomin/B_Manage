@@ -168,10 +168,10 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label required" >学历</label>
+                        <label class="layui-form-label required" >淘宝常购品类</label>
                         <div class="layui-input-inline">
-                            <select name="xl"  multiple="multiple"  mo:dict="xl_range"
-                                    mo-selected="${param.status}"></select>
+                            <div id="xlTree" class="tree"></div>
+                            <input type="hidden" name="xl" id="xl">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -223,11 +223,133 @@
     layui.config({
         base: '../../js/',
     })
-    layui.use(['layer','upload','multiSelect'], function () {
+    layui.use(['layer','upload','multiSelect','tree','util'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var upload = layui.upload;
+        var tree = layui.tree;
+        var util = layui.util;
         var multiSelect = layui.multiSelect;
+
+
+        var data = [{
+            title: '服装/箱包'
+            ,id: 1
+            ,children: [{
+                title: '0-50'
+                ,id: 5
+            },{
+                title: '50-100'
+                ,id: 6
+            },{
+                title: '100-200'
+                ,id: 7
+            },{
+                title: '300-500'
+                ,id: 8
+            },{
+                title: '500-1000'
+                ,id: 9
+            },{
+                title: '1000以上'
+                ,id: 10
+            }]
+        },{
+            title: '生活用品'
+            ,id: 2
+            ,children: [{
+                title: '0-50'
+                ,id: 11
+            },{
+                title: '50-100'
+                ,id: 12
+            },{
+                title: '100-200'
+                ,id: 13
+            },{
+                title: '300-500'
+                ,id: 14
+            },{
+                title: '500-1000'
+                ,id:15
+            },{
+                title: '1000以上'
+                ,id: 16
+            }]
+        },{
+            title: '运动户外'
+            ,id: 3
+            ,children: [{
+                title: '0-50'
+                ,id: 17
+            },{
+                title: '50-100'
+                ,id: 18
+            },{
+                title: '100-200'
+                ,id: 19
+            },{
+                title: '300-500'
+                ,id: 20
+            },{
+                title: '500-1000'
+                ,id: 21
+            },{
+                title: '1000以上'
+                ,id: 22
+            }]
+        },{
+            title: '个人护理'
+            ,id: 4
+            ,children: [{
+                title: '0-50'
+                ,id: 23
+            },{
+                title: '50-100'
+                ,id: 24
+            },{
+                title: '100-200'
+                ,id: 25
+            },{
+                title: '300-500'
+                ,id: 26
+            },{
+                title: '500-1000'
+                ,id: 27
+            },{
+                title: '1000以上'
+                ,id: 28
+            }]
+        },{
+            title: '食品'
+            ,id: 5
+            ,children: [{
+                title: '0-50'
+                ,id: 29
+            },{
+                title: '50-100'
+                ,id: 30
+            },{
+                title: '100-200'
+                ,id: 31
+            },{
+                title: '300-500'
+                ,id: 32
+            },{
+                title: '500-1000'
+                ,id: 33
+            },{
+                title: '1000以上'
+                ,id: 34
+            }]
+        }];
+
+        tree.render({
+            elem: '#xlTree'
+            ,data: data
+            ,showCheckbox: true
+            ,id:'xltree1'
+        });
         //选择店铺
         $("#chsShop").click(function () {
             window.layerIndex = layer.open({
@@ -253,6 +375,8 @@
             e.preventDefault();
             var form = $(this).parents("form");
             var url = form.attr("action");
+            var checkData = tree.getChecked('xltree1');
+            $("#xl").val(JSON.stringify(checkData));
             var serializeArray = form.serializeArray();
             $.post(url, serializeArray, function (result) {
                 if (result.data == null) {
@@ -284,6 +408,8 @@
             e.preventDefault();
             var form = $(this).parents("form");
             var url = "/task/update";
+            var checkData = tree.getChecked('xltree1');
+            $("#xl").val(JSON.stringify(checkData));
             var serializeArray = form.serializeArray();
             $.post(url, serializeArray, function (result) {
                 if (result.data == null) {

@@ -27,4 +27,9 @@ public interface IntegralRepository extends BaseRepository<Integral,Long>, JpaSp
     @Query(value = "update integral set delete_flg=1 where id=?1",nativeQuery = true)
     Integer deleteIntegral(Long id);
 
+
+    @Transactional
+    @Modifying
+    @Query(value = "update integral set point=point+(?1) where user_name=?2",nativeQuery = true)
+    void addIntegral(int point,String userName);
 }

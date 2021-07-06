@@ -24,28 +24,21 @@ public class RobTask implements Serializable {
      * 任务类型
      */
     private String taskType;
-
     /**
      * 创建时间
      */
     private Date createDate;
-
-
     private Long cUserId;
-
     private String cUserName;
-
     private String cNickName;
-
     private String wangwangId;
-
+    private String pddId;//  '拼多ID',
+    private String jdId;//  '京东ID',
+    private String dyId;//  '抖音ID',
     private String qq;
-
     //任务状态 1:待审核 2:已审核 3:进行中 4：待付款 5：已付款 6：已发货 7：已完成
     private String robTaskStatus;
-
     private Long merchantId;
     private String merchantName;
-
     private String payPicUrl;
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/aun/Timo"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .dict-value {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="timo-layout-page">
+<div class="layui-card">
+    <div class="layui-card-header timo-card-header">
+        <span><i class="fa fa-bars"></i>C端佣金表管理</span>
+        <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row timo-card-screen">
+            <div class="pull-left layui-form-pane timo-search-box">
+                <div class="layui-inline">
+                    <label class="layui-form-label">佣金价格</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" th:value="${param.price}" placeholder="请输入商家价目" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn timo-search-btn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="pull-right screen-btn-group">
+                <button class="layui-btn open-popup" data-title="添加价目" th:attr="data-url=@{/merchantPrice/add}"
+                        shiro:hasPermission="merchantPrice:add" data-size="615,558">
+                    <i class="fa fa-plus"></i> 添加
+                </button>
+            </div>
+        </div>
+        <div class="timo-table-wrap">
+            <table class="layui-table timo-table">
+                <thead>
+                <tr>
+                    <th class="timo-table-checkbox">
+                        <label class="timo-checkbox"><input type="checkbox">
+                            <i class="layui-icon layui-icon-ok"></i></label>
+                    </th>
+                    <th class="sortable" data-field="priceType">价格类型</th>
+                    <th class="sortable" data-field="priceStart">起始价格</th>
+                    <th class="sortable" data-field="priceEnd">结束价格</th>
+                    <th class="sortable" data-field="price">商家价目</th>
+                    <th class="sortable" data-field="createDate">创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item:${list}">
+                    <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.id}">
+                        <i class="layui-icon layui-icon-ok"></i></label></td>
+                    <td th:text="${item.priceType}">价格类型</td>
+                    <td th:text="${item.priceStart}">起始价格</td>
+                    <td th:text="${item.priceEnd}">结束价格</td>
+                    <td th:text="${item.price}">商家价目</td>
+                    <td th:text="${item.createDate}">创建时间</td>
+
+                    <td>
+                        <a class="open-popup" data-title="编辑价目" th:attr="data-url=@{'/merchantPrice/edit/'+${item.id}}"
+                           shiro:hasPermission="merchantPrice:edit"
+                           data-size="615,558" href="#">编辑</a>
+                        <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/merchantPrice/detail/'+${item.id}}"
+                           shiro:hasPermission="merchantPrice:detail"
+                           data-size="800,600" href="#">详细</a>
+                        <a class="ajax-get" data-msg="您是否确认删除" th:href="@{'/merchantPrice/delete/'+${item.id}}"
+                           shiro:hasPermission="merchantPrice:del">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:replace="/common/fragment :: page"></div>
+    </div>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script>
+    layui.use(['element'], function () {
+        var $ = layui.jquery;
+        var dv = $(".dict-value");
+        $(window).on("resize", function () {
+            var width = $("body").width();
+            if (width > 1200) {
+                dv.css("max-width", width * 0.32);
+            } else {
+                dv.css("max-width", width * 0.20);
+            }
+        }).resize();
+    });
+</script>
+</body>
+</html>

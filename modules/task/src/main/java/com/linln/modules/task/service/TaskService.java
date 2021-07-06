@@ -33,6 +33,8 @@ public interface TaskService {
 
     void auditTaskById(Long id);
 
+    void unAuditTaskById(Long id);
+
     Page<Task> getPageList2C(String cUser);
 
     ResultVo robOrder(String task);

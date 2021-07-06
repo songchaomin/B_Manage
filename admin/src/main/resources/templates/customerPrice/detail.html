@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<style>
+    .upload-img{
+        width: 80px;
+        height:80px;
+        border:0;
+        padding-right: 2px;
+    }
+</style>
+<body>
+<div class="layui-form timo-compile">
+    <form>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">价格类型</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="priceType" id="userName" th:value="${item.priceType}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">起始价格</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="priceStart" th:value="${item.priceStart}" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required ">结束价格</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="priceEnd" th:value="${item.priceEnd}" >
+            </div>
+        </div>
+
+        <div class="layui-form-item ">
+            <label class="layui-form-label required">商家价目</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="price" th:value="${item.price}" >
+            </div>
+        </div>
+
+        <div class="layui-form-item timo-finally">
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

@@ -66,6 +66,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>Timo-${project.version}</finalName>
+        <finalName>b_manage</finalName>
     </build>
 </project>

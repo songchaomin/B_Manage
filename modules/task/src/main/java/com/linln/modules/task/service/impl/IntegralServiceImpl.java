@@ -51,4 +51,13 @@ public class IntegralServiceImpl implements IntegralService {
     public Integral getIntegralByUserName(String username) {
         return integralRepository.getIntegralByUserName(username);
     }
+
+    /**
+     * 积分增减
+     * @param point
+     */
+    @Override
+    public void addIntegral(int point,String userName) {
+        integralRepository.addIntegral(point,userName);
+    }
 }

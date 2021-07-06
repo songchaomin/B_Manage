@@ -76,6 +76,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void unAuditTaskById(Long id) {
+        taskRepository.unAuditTaskById(id);
+    }
+
+    @Override
     public Page<Task> getPageList2C(String cUser) {
         CUser user = JSONObject.parseObject(cUser, CUser.class);
         PageRequest page =PageRequest.of(user.page-1,user.limit);
@@ -143,14 +148,18 @@ public class TaskServiceImpl implements TaskService {
             resultVo.setMsg("同一个任务只允许抢购一次！");
             return resultVo;
         }
-        //判断同一个店铺是否10天内抢过
+        //如果是淘宝或者是京东，判断同一个店铺是否10天内抢过
         //查询该用户该店铺所有抢过单的任务
-        int tenDayRobTask=robTaskRepository.queryTenDayRobTask(cTask.getCUserName(), cTask.getShopName(),9);
-        if (tenDayRobTask>=1){
-            resultVo.setCode(0);
-            resultVo.setMsg("抢单失败，请尝试其它任务！");
-            return resultVo;
+        String taskType = cTask.getTaskType();
+        if("淘宝".equals(taskType) || "京东".equals(taskType)){
+            int tenDayRobTask=robTaskRepository.queryTenDayRobTask(cTask.getCUserName(), cTask.getShopName(),9);
+            if (tenDayRobTask>=1){
+                resultVo.setCode(0);
+                resultVo.setMsg("抢单失败，请尝试其它任务！");
+                return resultVo;
+            }
         }
+
         RobTask robTask=new RobTask();
         robTask.setTaskId(cTask.getId());
         robTask.setTaskName(cTask.getTaskName());
@@ -160,6 +169,9 @@ public class TaskServiceImpl implements TaskService {
         robTask.setCNickName(cTask.getCNickName());
         robTask.setCreateDate(new Date());
         robTask.setWangwangId(cTask.getWangwangId());
+        robTask.setPddId(cTask.getPddId());
+        robTask.setDyId(cTask.getDyId());
+        robTask.setJdId(cTask.getJdId());
         robTask.setQq(cTask.getQq());
         robTask.setRobTaskStatus("3");
         robTask.setMerchantId(cTask.getMerchantId());

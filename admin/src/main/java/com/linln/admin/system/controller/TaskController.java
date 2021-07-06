@@ -13,8 +13,13 @@ import com.linln.component.actionLog.annotation.ActionLog;
 import com.linln.component.actionLog.annotation.EntityParam;
 import com.linln.component.shiro.ShiroUtil;
 import com.linln.modules.system.domain.User;
+import com.linln.modules.task.domain.IntegralLogger;
+import com.linln.modules.task.domain.Price;
 import com.linln.modules.task.domain.RobTask;
 import com.linln.modules.task.domain.Task;
+import com.linln.modules.task.service.IntegralLoggerService;
+import com.linln.modules.task.service.IntegralService;
+import com.linln.modules.task.service.PriceService;
 import com.linln.modules.task.service.TaskService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +29,13 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -37,6 +44,15 @@ import java.util.Objects;
 public class TaskController {
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private PriceService priceService;
+
+    @Autowired
+    private IntegralService integralService;
+
+    @Autowired
+    private IntegralLoggerService integralLoggerService;
 
     @GetMapping("/index")
     @RequiresPermissions("task:index")
@@ -217,6 +233,7 @@ public class TaskController {
     @RequiresPermissions("task:audit")
     @ResponseBody
     public ResultVo audit(@PathVariable("id") Long id, Model model){
+        User user = ShiroUtil.getSubject();
         Task oldTask = taskService.getTaskById(id);
         Byte effective = oldTask.getEffective();
         Byte taskStatus = oldTask.getTaskStatus();
@@ -227,6 +244,42 @@ public class TaskController {
             return ResultVoUtil.error("非待审核的任务，不需要审核！");
         }
         taskService.auditTaskById(id);
+        //审核成功，扣减B端商户的积分。
+        //任务本金
+        Integer babyPrice = oldTask.getBabyPrice().intValue();
+        String taskType = oldTask.getTaskType();
+        //任务数量
+        Integer personNum = oldTask.getPersonNum();
+        String merchantName = oldTask.getMerchantName();
+        List<Price> priceByPrice = priceService.getMerchantPriceByPrice(babyPrice, taskType);
+        if(!CollectionUtils.isEmpty(priceByPrice)){
+            try {
+                //B端商户的促销价
+                Price merchantPrice = priceByPrice.get(0);
+                Integer price = merchantPrice.getPrice();
+                //计算积分 （本金+促销价）*任务数
+                int point=(babyPrice+price)*personNum;
+                //扣减积分
+                integralService.addIntegral( point*(-1),merchantName);
+                //增加积分扣减日志
+                IntegralLogger integralLogger=new IntegralLogger();
+                integralLogger.setBusinessType("任务审核");
+                integralLogger.setMerchantName(merchantName);
+                integralLogger.setOperatorType("扣减");
+                integralLogger.setPoint(point*(-1));
+                integralLogger.setOperatorName(user.getUsername());
+                integralLogger.setCreateDate(new Date());
+                integralLogger.setDeleteFlg((byte)0);
+
+                integralLoggerService.addIntegralLogger(integralLogger);
+            } catch (Exception e) {
+                taskService.unAuditTaskById(id);
+                ResultVo resultVo=new ResultVo();
+                resultVo.setMsg("审核失败，原因："+e.getMessage());
+                resultVo.setCode(-1);
+                return  resultVo;
+            }
+        }
         return  ResultVoUtil.SAVE_SUCCESS;
     }
 

@@ -2,70 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:mo="https://gitee.com/aun/Timo">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
-    <style>
-       .upload-img{
-           width: 80px;
-           height:80px;
-           border:0;
-           padding-right: 2px;
-       }
-    </style>
 </head>
+<style>
+    .upload-img{
+        width: 80px;
+        height:80px;
+        border:0;
+        padding-right: 2px;
+    }
+</style>
 <body>
 <div class="layui-form timo-compile">
-    <form th:action="@{/shop/add}">
+    <form th:action="@{/merchantPrice/edit}">
+        <input type="hidden" name="id" th:value="${item.id}">
         <div class="layui-form-item">
-            <label class="layui-form-label required">商户编号</label>
+            <label class="layui-form-label required">价格类型</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="userName" id="userName" placeholder="请选择商户编号">
-            </div>
-            <div class="layui-input-inline">
-                <button type="button" class="layui-btn" id="chs">选择</button>
+                <input class="layui-input" type="text" name="priceType" id="userName" th:value="${item.priceType}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required">店铺名称</label>
+            <label class="layui-form-label required">起始价格</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="shopName" placeholder="请输入店铺名称" >
+                <input class="layui-input" type="text" name="priceStart" th:value="${item.priceStart}" >
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required ">店铺掌柜</label>
+            <label class="layui-form-label required ">结束价格</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="shopManage" placeholder="请输入店铺掌柜" >
+                <input class="layui-input" type="text" name="priceEnd" th:value="${item.priceEnd}" >
             </div>
         </div>
 
         <div class="layui-form-item ">
-            <label class="layui-form-label required">发货人</label>
+            <label class="layui-form-label required">商家价目</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="deliverName" placeholder="请输入发货人" >
-            </div>
-        </div>
-        <div class="layui-form-item ">
-            <label class="layui-form-label required">发货电话</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="deliverPhone" placeholder="请输入发货电话" >
-            </div>
-        </div>
-        <div class="layui-form-item ">
-            <label class="layui-form-label required">发货地址</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="deliverAddr" placeholder="请输入发货地址" >
+                <input class="layui-input" type="text" name="price" th:value="${item.price}" >
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label required" >店铺图片</label>
-
-            <button type="button" class="layui-btn" id="shopPicId">上传店铺图片</button>
-            <blockquote  style="margin-top: 5px; margin-left: 30px;">
-                <div class="layui-upload-list" id="shopPicImg"></div>
-            </blockquote>
-            <input type="hidden" name="shopPic"  id="shopPicText" />
-        </div>
         <div class="layui-form-item timo-finally">
-            <button class="layui-btn shop-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn shop-edit-submit"><i class="fa fa-check-circle"></i>更新</button>
             <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
         </div>
     </form>
@@ -122,7 +99,7 @@
 
         //提交
         /* 提交表单数据 */
-        $(document).on("click", ".shop-submit", function (e) {
+        $(document).on("click", ".shop-edit-submit", function (e) {
             e.preventDefault();
             var form = $(this).parents("form");
             var url = form.attr("action");

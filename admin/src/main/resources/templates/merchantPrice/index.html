@@ -15,24 +15,17 @@
 <body class="timo-layout-page">
 <div class="layui-card">
     <div class="layui-card-header timo-card-header">
-        <span><i class="fa fa-bars"></i>店铺管理</span>
+        <span><i class="fa fa-bars"></i>商家价目表管理</span>
         <i class="layui-icon layui-icon-refresh refresh-btn"></i>
     </div>
     <div class="layui-card-body">
         <div class="layui-row timo-card-screen">
             <div class="pull-left layui-form-pane timo-search-box">
                 <div class="layui-inline">
-                    <label class="layui-form-label">店铺名称</label>
+                    <label class="layui-form-label">商家价目</label>
                     <div class="layui-input-block">
-                        <input type="text" name="name" th:value="${param.shopName}" placeholder="请输入店铺名称" autocomplete="off"
+                        <input type="text" name="name" th:value="${param.price}" placeholder="请输入商家价目" autocomplete="off"
                                class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">掌柜名</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="title" th:value="${param.shopManage}" placeholder="请输入掌柜名"
-                               autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -42,8 +35,8 @@
                 </div>
             </div>
             <div class="pull-right screen-btn-group">
-                <button class="layui-btn open-popup" data-title="添加店铺" th:attr="data-url=@{/shop/add}"
-                        shiro:hasPermission="shop:add" data-size="615,558">
+                <button class="layui-btn open-popup" data-title="添加价目" th:attr="data-url=@{/merchantPrice/add}"
+                        shiro:hasPermission="merchantPrice:add" data-size="615,558">
                     <i class="fa fa-plus"></i> 添加
                 </button>
             </div>
@@ -56,13 +49,11 @@
                         <label class="timo-checkbox"><input type="checkbox">
                             <i class="layui-icon layui-icon-ok"></i></label>
                     </th>
-                    <th class="sortable" data-field="userName">商户编号</th>
-                    <th class="sortable" data-field="shopName">店铺名称</th>
-                    <th class="sortable" data-field="shopManage">店铺掌柜</th>
-                    <th class="sortable" data-field="deliverName">发货人</th>
-                    <th class="sortable" data-field="deliverPhone">发货电话</th>
-                    <th class="sortable" data-field="deliverAddr">发货地址</th>
-                    <!--<th class="sortable" data-field="shopPic">店铺图片</th>-->
+                    <th class="sortable" data-field="userName">价格类型</th>
+                    <th class="sortable" data-field="shopName">起始价格</th>
+                    <th class="sortable" data-field="shopManage">结束价格</th>
+                    <th class="sortable" data-field="deliverName">商家价目</th>
+                    <th class="sortable" data-field="deliverPhone">创建时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -70,23 +61,21 @@
                 <tr th:each="item:${list}">
                     <td><label class="timo-checkbox"><input type="checkbox" th:value="${item.id}">
                         <i class="layui-icon layui-icon-ok"></i></label></td>
-                    <td th:text="${item.userName}">商户名称</td>
-                    <td th:text="${item.shopName}">店铺名称</td>
-                    <td th:text="${item.shopManage}">店铺掌柜</td>
-                    <td th:text="${item.deliverName}">发货人</td>
-                    <td th:text="${item.deliverPhone}">发货电话</td>
-                    <td th:text="${item.deliverAddr}">发货地址</td>
-                   <!-- <td th:text="${item.shopPic}" class="dict-value">店铺图片</td>-->
+                    <td th:text="${item.priceType}">价格类型</td>
+                    <td th:text="${item.priceStart}">起始价格</td>
+                    <td th:text="${item.priceEnd}">结束价格</td>
+                    <td th:text="${item.price}">商家价目</td>
+                    <td th:text="${item.createDate}">创建时间</td>
 
                     <td>
-                        <a class="open-popup" data-title="编辑店铺" th:attr="data-url=@{'/shop/edit/'+${item.id}}"
-                           shiro:hasPermission="shop:edit"
+                        <a class="open-popup" data-title="编辑价目" th:attr="data-url=@{'/merchantPrice/edit/'+${item.id}}"
+                           shiro:hasPermission="merchantPrice:edit"
                            data-size="615,558" href="#">编辑</a>
-                        <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/shop/detail/'+${item.id}}"
-                           shiro:hasPermission="shop:detail"
+                        <a class="open-popup" data-title="详细信息" th:attr="data-url=@{'/merchantPrice/detail/'+${item.id}}"
+                           shiro:hasPermission="merchantPrice:detail"
                            data-size="800,600" href="#">详细</a>
-                        <a class="ajax-get" data-msg="您是否确认删除" th:href="@{'/shop/delete/'+${item.id}}"
-                           shiro:hasPermission="shop:del">删除</a>
+                        <a class="ajax-get" data-msg="您是否确认删除" th:href="@{'/merchantPrice/delete/'+${item.id}}"
+                           shiro:hasPermission="merchantPrice:del">删除</a>
                     </td>
                 </tr>
                 </tbody>

@@ -47,7 +47,7 @@
                     <th class="sortable" data-field="taskType">任务类型</th>
                     <th class="sortable" data-field="cUserName">用户编码</th>
                     <th class="sortable" data-field="cNickName">用户名称</th>
-                    <th class="sortable" data-field="wangwangId">旺旺号</th>
+                    <th class="sortable" data-field="wangwangId">账号名称</th>
                     <th class="sortable" data-field="qq">QQ</th>
                     <th class="sortable" data-field="robTaskStatus">任务状态</th>
                     <th class="sortable" data-field="payPicUrl">任务凭证</th>
@@ -63,7 +63,13 @@
                     <td th:text="${item.taskType}">任务类型</td>
                     <td th:text="${item.cUserName}">用户编码</td>
                     <td th:text="${item.cNickName}">用户名称</td>
-                    <td th:text="${item.wangwangId}">旺旺号</td>
+                    <td th:switch="${item.taskType}">
+                        <span  th:case="淘宝" th:text="${item.wangwangId}" ></span>
+                        <span  th:case="抖音" th:text="${item.dyId}" ></span>
+                        <span  th:case="拼多多" th:text="${item.pddId}" ></span>
+                        <span  th:case="京东" th:text="${item.jdId}" ></span>
+
+                    </td>
                     <td th:text="${item.qq}">QQ</td>
                     <td th:switch="${item.robTaskStatus}">
                         <span  th:case="1" th:text="待审核" ></span>
@@ -74,7 +80,7 @@
                         <span  th:case="6" th:text="已发货" ></span>
                         <span  th:case="7" th:text="已完成" ></span>
                     </td>
-                    <td><img th:src="${item.payPicUrl}" style="width:100px;height:100px;"></td>
+                    <td><a th:if="${item.robTaskStatus} gt 4"  th:onclick="'viewTaskPic('+${item.id}+')'"  >显示截图</a></td>
 
                     <td th:text="${item.createDate}">抢单时间</td>
                     <td>
@@ -82,7 +88,7 @@
                            shiro:hasPermission="robTask:auditAccount" th:href="@{'/robTask/auditAccount/'+${item.id}}">确认账户</a>
                         <a th:if="${item.robTaskStatus} eq 5" class="ajax-deliver" data-msg="确认付款凭证是否真实有效"
                            shiro:hasPermission="robTask:deliver"
-                          th:href="@{'/robTask/deliver/'+${item.id}}">确认截图并发货</a>
+                          th:href="@{'/robTask/deliver/'+${item.id}}">确认截图并完成</a>
                         <a class="ajax-get" data-msg="您是否确认删除" th:href="@{'/robTask/delete/'+${item.id}}"
                            shiro:hasPermission="robTask:delete">删除</a>
                     </td>
@@ -94,9 +100,11 @@
     </div>
 </div>
 <script th:replace="/common/template :: script"></script>
+<script src="/js/plugins/jquery-2.2.4.js"></script>
 <script>
-    layui.use(['element'], function () {
+    layui.use(['element','layer'], function () {
         var $ = layui.jquery;
+        var layer = layui.layer;
         var dv = $(".dict-value");
         $(window).on("resize", function () {
             var width = $("body").width();
@@ -106,7 +114,49 @@
                 dv.css("max-width", width * 0.20);
             }
         }).resize();
+
+
     });
+
+    function viewTaskPic(val){
+       //调用接口回写所有的URL
+        debugger;
+        var data={robTaskId:val}
+        $.ajax({
+            type: "GET",
+            url: '/robTask/get/'+val,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success:function(res){
+                if(res.code==200){
+                    var urls=res.data;
+                    var bodyNode="<div>";
+                    if(urls==null){
+                        return;
+                    }
+                    for(var i=0;i<urls.length;i++){
+                        bodyNode=bodyNode+"<img src='"+urls[i]+"' style='width:200px;height:200px;'/>";
+                    }
+                    bodyNode=bodyNode+"</div>"
+                    layer.open({
+                        type:1
+                        ,area: ['570px','500px']
+                        ,closeBtn:1
+                        ,title: false
+                        ,id: 'viewPic' //设定一个id，防止重复弹
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: bodyNode
+                    });
+                }
+
+            }
+
+
+
+        });
+    }
+
+
 </script>
 </body>
 </html>

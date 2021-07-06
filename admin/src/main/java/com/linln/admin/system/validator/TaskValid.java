@@ -115,7 +115,7 @@ public class TaskValid implements Serializable {
     /**
      * 学历'
      */
-    @NotEmpty(message = "学历不能为空")
+    @NotEmpty(message = "淘宝常规分类不能为空")
     private String xl;
     /**
      * 手机品牌'
