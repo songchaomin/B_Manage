@@ -28,5 +28,7 @@ public interface PriceService {
 
     List<Price> getMerchantPriceByPrice(int price, String priceType);
 
+    List<Price> getCustomerPriceByPrice(int price, String priceType);
+
 
 }

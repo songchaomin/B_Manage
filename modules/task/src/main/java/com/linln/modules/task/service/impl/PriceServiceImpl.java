@@ -43,4 +43,9 @@ public class PriceServiceImpl implements PriceService {
     public List<Price> getMerchantPriceByPrice(int price, String priceType) {
         return priceRepository.getMerchantPriceByPrice(price,priceType);
     }
+
+    @Override
+    public List<Price> getCustomerPriceByPrice(int price, String priceType) {
+        return priceRepository.getCustomerPriceByPrice(price,priceType);
+    }
 }

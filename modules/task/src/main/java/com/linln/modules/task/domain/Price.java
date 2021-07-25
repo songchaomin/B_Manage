@@ -47,6 +47,8 @@ public class Price {
      */
     private Integer price;
 
+    private Integer managePrice;
+
     /**
      * 删除标记
      */

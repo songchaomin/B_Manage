@@ -49,3 +49,6 @@ spring:
   ## json配置
   jackson:
     time-zone: Asia/Shanghai
+
+
+addCustomIntegralUrl: http://localhost:8088/integral/updateUserIntegral
