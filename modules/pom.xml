@@ -17,5 +17,6 @@
     <modules>
         <module>system</module>
         <module>task</module>
+        <module>notice</module>
     </modules>
 </project>

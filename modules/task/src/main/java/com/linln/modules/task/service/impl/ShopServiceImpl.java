@@ -18,7 +18,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public Page<Shop> getPageList(Example<Shop> example) {
         // 创建分页对象
-        PageRequest page = PageSort.pageRequest(Sort.Direction.ASC);
+        PageRequest page = PageSort.pageRequest(Sort.Direction.DESC);
         return shopRepository.findAll(example, page);
     }
 

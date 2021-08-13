@@ -71,7 +71,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public List<Menu> getListBySortOk() {
-        Sort sort = new Sort(Sort.Direction.ASC, "type", "sort");
+        Sort sort = new Sort(Sort.Direction.DESC, "type", "sort");
         return menuRepository.findAllByStatus(sort, StatusEnum.OK.getCode());
     }
 
@@ -91,7 +91,7 @@ public class MenuServiceImpl implements MenuService {
      */
     @Override
     public List<Menu> getListByPid(Long pid, Long notId){
-        Sort sort = new Sort(Sort.Direction.ASC, "sort");
+        Sort sort = new Sort(Sort.Direction.DESC, "sort");
         return menuRepository.findByPidAndIdNot(sort, pid, notId);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -47,5 +48,10 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public List<Price> getCustomerPriceByPrice(int price, String priceType) {
         return priceRepository.getCustomerPriceByPrice(price,priceType);
+    }
+
+    @Override
+    public int update(Price price) {
+        return priceRepository.update(price.getId(),price.getPrice()==null? BigDecimal.ZERO:price.getPrice(),price.getManagePrice()==null?BigDecimal.ZERO:price.getManagePrice());
     }
 }

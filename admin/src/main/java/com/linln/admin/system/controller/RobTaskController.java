@@ -101,14 +101,15 @@ public class RobTaskController {
         //计算积分数
         if(!CollectionUtils.isEmpty(customerPriceByPrice)){
             Price price = customerPriceByPrice.get(0);
-            int totalIntegral=babyPrice.intValue()+price.getPrice();
+            BigDecimal totalIntegral=babyPrice.add(price.getPrice());
             //调用C端接口
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("price",totalIntegral);
+            jsonObject.put("integral",totalIntegral);
             jsonObject.put("userName",oldRobTask.getCUserName());
-            jsonObject.put("operator",subject.getUsername());
+            jsonObject.put("operatorName",subject.getUsername());
             try {
-                HttpClientUtil.doPost(addCustomIntegralUrl, jsonObject.toJSONString());
+                String result = HttpClientUtil.doPost(addCustomIntegralUrl, jsonObject.toJSONString());
+                System.out.println(result);
             } catch (Exception e) {
                 resultVo.setCode(-1);
                 resultVo.setMsg("调用更新C端用户积分时，远程服务器没有响应，发货失败");

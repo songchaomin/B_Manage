@@ -3,6 +3,7 @@ package com.linln.modules.task.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -45,9 +46,9 @@ public class Price {
     /**
      * price
      */
-    private Integer price;
+    private BigDecimal price;
 
-    private Integer managePrice;
+    private BigDecimal managePrice;
 
     /**
      * 删除标记

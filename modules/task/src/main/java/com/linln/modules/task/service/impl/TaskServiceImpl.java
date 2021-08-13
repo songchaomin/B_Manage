@@ -42,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Page<RobTask> merchantGetRobTaskList(Example<RobTask> example) {
-        PageRequest page = PageSort.pageRequest(Sort.Direction.ASC);
+        PageRequest page = PageSort.pageRequest(Sort.Direction.DESC);
         return robTaskRepository.findAll(example, page);
     }
 
@@ -151,7 +151,7 @@ public class TaskServiceImpl implements TaskService {
         //如果是淘宝或者是京东，判断同一个店铺是否10天内抢过
         //查询该用户该店铺所有抢过单的任务
         String taskType = cTask.getTaskType();
-        if("淘宝".equals(taskType) || "京东".equals(taskType)){
+        if("淘宝".equals(taskType) || "京东".equals(taskType) || "拼多多".equals(taskType)){
             int tenDayRobTask=robTaskRepository.queryTenDayRobTask(cTask.getCUserName(), cTask.getShopName(),9);
             if (tenDayRobTask>=1){
                 resultVo.setCode(0);

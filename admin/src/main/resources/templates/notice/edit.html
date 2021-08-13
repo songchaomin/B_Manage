@@ -3,73 +3,48 @@
       xmlns:mo="https://gitee.com/aun/Timo">
 <head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
     <style>
-       .upload-img{
-           width: 80px;
-           height:80px;
-           border:0;
-           padding-right: 2px;
-       }
+
     </style>
 </head>
 <body>
 <div class="layui-form timo-compile">
-    <form th:action="@{/customerPrice/add}">
-        <input type="hidden" name="systemName" value="C"/>
+    <form th:action="@{/integral/edit}">
         <div class="layui-form-item">
-            <label class="layui-form-label required">价格类型</label>
+            <input type="hidden" name="id" th:value="${integral.id}">
+            <label class="layui-form-label required">商户编号</label>
             <div class="layui-input-inline">
-                <input type="radio" name="priceType" value="淘宝" title="淘宝" >
-                <input type="radio" name="priceType" value="京东" title="京东">
-                <input type="radio" name="priceType" value="拼多多" title="拼多多">
-                <input type="radio" name="priceType" value="抖音" title="抖音">
-            </div>
-
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">起始价格</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="priceStart" placeholder="请输入起始价格" >
+                <input class="layui-input" type="text" name="userName" id="userName" th:value="${integral.userName}" readonly>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required ">结束价格</label>
+            <label class="layui-form-label required">积分</label>
             <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="priceEnd" placeholder="请输入结束价格" >
+                <input class="layui-input" type="text" name="point" th:value="${integral.point}" placeholder="请输入积分" >
             </div>
         </div>
-
-        <div class="layui-form-item ">
-            <label class="layui-form-label required">佣金</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="price" placeholder="请输入佣金" >
-            </div>
-        </div>
-
-        <div class="layui-form-item ">
-            <label class="layui-form-label required">管理奖金</label>
-            <div class="layui-input-inline">
-                <input class="layui-input" type="text" name="managePrice" placeholder="请输入管理奖金" >
-            </div>
-        </div>
-
-
         <div class="layui-form-item timo-finally">
-            <button class="layui-btn merchantPrice-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn integral-update"><i class="fa fa-check-circle"></i> 保存</button>
             <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
         </div>
     </form>
 </div>
 <script th:replace="/common/template :: script"></script>
 <script>
-    layui.use(['element','upload','layer'], function () {
+    layui.use(['layer'], function () {
         var $ = layui.jquery;
-        var upload = layui.upload;
         var layer=layui.layer;
+        $("#chs").click(function(){
+            layer.open({
+                index:1
+                ,content: '/system/user/userlistinfo'
+                , type: 2
+                ,title:'用户列表'
+                ,area: ['600px', '400px']
+            });
+        });
 
-
-        //提交
         /* 提交表单数据 */
-        $(document).on("click", ".merchantPrice-submit", function (e) {
+        $(document).on("click", ".integral-update", function (e) {
             e.preventDefault();
             var form = $(this).parents("form");
             var url = form.attr("action");
@@ -96,8 +71,10 @@
                 }
             });
         });
-
     });
+
+
+
 </script>
 </body>
 </html>

@@ -51,4 +51,5 @@ spring:
     time-zone: Asia/Shanghai
 
 
-addCustomIntegralUrl: http://localhost:8088/integral/updateUserIntegral
+##调用C端积分操作
+addCustomIntegralUrl: http://localhost:8087/integral/updateUserIntegral

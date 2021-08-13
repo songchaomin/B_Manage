@@ -1,6 +1,9 @@
 package com.linln.admin.system.controller;
 
 import com.linln.admin.system.validator.MerchantPriceValid;
+import com.linln.common.constant.AdminConst;
+import com.linln.common.enums.ResultEnum;
+import com.linln.common.exception.ResultException;
 import com.linln.common.utils.ResultVoUtil;
 import com.linln.common.vo.ResultVo;
 import com.linln.component.actionLog.action.SaveAction;
@@ -82,15 +85,11 @@ public class MerchantPriceController {
     @ResponseBody
     @ActionLog(name = "店铺管理", message = "店铺：${userName}", action = SaveAction.class)
     public ResultVo save(@Validated MerchantPriceValid valid, @EntityParam Price price){
-
         price.setDeleteFlg((byte)0);
         price.setCreateDate(new Date());
-
         priceService.save(price);
         return ResultVoUtil.SAVE_SUCCESS;
     }
-
-
 
     /**
      * 跳转到编辑页面
@@ -103,7 +102,6 @@ public class MerchantPriceController {
         return "/merchantPrice/edit";
     }
 
-
     @GetMapping("/detail/{id}")
     @RequiresPermissions("merchantPrice:detail")
     public String detail(@PathVariable("id") Long id, Model model) {
@@ -112,5 +110,15 @@ public class MerchantPriceController {
         return "/merchantPrice/detail";
     }
 
+    @PostMapping("/update")
+    @ResponseBody
+    public ResultVo update( @EntityParam Price price) {
 
+        // 验证数据是否合格
+        if (price.getId() == null) {
+            throw new RuntimeException("主键不能为空！");
+        }
+        priceService.update(price);
+        return ResultVoUtil.SAVE_SUCCESS;
+    }
 }

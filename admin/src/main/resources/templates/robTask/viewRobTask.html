@@ -45,8 +45,8 @@
                     </th>
                     <th class="sortable" data-field="taskName">任务名称</th>
                     <th class="sortable" data-field="taskType">任务类型</th>
-                    <th class="sortable" data-field="cUserName">用户编码</th>
-                    <th class="sortable" data-field="cNickName">用户名称</th>
+                 <!--   <th class="sortable" data-field="cUserName">用户编码</th>
+                    <th class="sortable" data-field="cNickName">用户名称</th>-->
                     <th class="sortable" data-field="wangwangId">账号名称</th>
                     <th class="sortable" data-field="qq">QQ</th>
                     <th class="sortable" data-field="robTaskStatus">任务状态</th>
@@ -61,8 +61,8 @@
                         <i class="layui-icon layui-icon-ok"></i></label></td>
                     <td th:text="${item.taskName}">任务名称</td>
                     <td th:text="${item.taskType}">任务类型</td>
-                    <td th:text="${item.cUserName}">用户编码</td>
-                    <td th:text="${item.cNickName}">用户名称</td>
+                  <!--  <td th:text="${item.cUserName}">用户编码</td>
+                    <td th:text="${item.cNickName}">用户名称</td>-->
                     <td th:switch="${item.taskType}">
                         <span  th:case="淘宝" th:text="${item.wangwangId}" ></span>
                         <span  th:case="抖音" th:text="${item.dyId}" ></span>
@@ -74,10 +74,10 @@
                     <td th:switch="${item.robTaskStatus}">
                         <span  th:case="1" th:text="待审核" ></span>
                         <span  th:case="2" th:text="已审核" ></span>
-                        <span  th:case="3" th:text="进行中" ></span>
-                        <span  th:case="4" th:text="待付款" ></span>
+                        <span  th:case="3" th:text="等待审核" ></span>
+                        <span  th:case="4" th:text="进行中" ></span>
                         <span  th:case="5" th:text="已付款" ></span>
-                        <span  th:case="6" th:text="已发货" ></span>
+                        <span  th:case="6" th:text="已完成" ></span>
                         <span  th:case="7" th:text="已完成" ></span>
                     </td>
                     <td><a th:if="${item.robTaskStatus} gt 4"  th:onclick="'viewTaskPic('+${item.id}+')'"  >显示截图</a></td>
@@ -120,7 +120,6 @@
 
     function viewTaskPic(val){
        //调用接口回写所有的URL
-        debugger;
         var data={robTaskId:val}
         $.ajax({
             type: "GET",

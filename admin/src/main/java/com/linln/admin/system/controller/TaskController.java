@@ -34,6 +34,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -246,19 +247,19 @@ public class TaskController {
         taskService.auditTaskById(id);
         //审核成功，扣减B端商户的积分。
         //任务本金
-        Integer babyPrice = oldTask.getBabyPrice().intValue();
+        BigDecimal babyPrice = oldTask.getBabyPrice();
         String taskType = oldTask.getTaskType();
         //任务数量
         Integer personNum = oldTask.getPersonNum();
         String merchantName = oldTask.getMerchantName();
-        List<Price> priceByPrice = priceService.getMerchantPriceByPrice(babyPrice, taskType);
+        List<Price> priceByPrice = priceService.getMerchantPriceByPrice(babyPrice.intValue(), taskType);
         if(!CollectionUtils.isEmpty(priceByPrice)){
             try {
                 //B端商户的促销价
                 Price merchantPrice = priceByPrice.get(0);
-                Integer price = merchantPrice.getPrice();
+                BigDecimal price = merchantPrice.getPrice();
                 //计算积分 （本金+促销价）*任务数
-                int point=(babyPrice+price)*personNum;
+                int point=(babyPrice.add(price)).multiply(BigDecimal.valueOf(personNum)).intValue();
                 //扣减积分
                 integralService.addIntegral( point*(-1),merchantName);
                 //增加积分扣减日志

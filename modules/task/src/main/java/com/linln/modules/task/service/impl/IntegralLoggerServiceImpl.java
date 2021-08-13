@@ -20,7 +20,7 @@ public class IntegralLoggerServiceImpl implements IntegralLoggerService {
     @Override
     public Page<IntegralLogger> getPageList(Example<IntegralLogger> example) {
         // 创建分页对象
-        PageRequest page = PageSort.pageRequest(Sort.Direction.ASC);
+        PageRequest page = PageSort.pageRequest(Sort.Direction.DESC);
         return integralLoggerRepository.findAll(example, page);
     }
 

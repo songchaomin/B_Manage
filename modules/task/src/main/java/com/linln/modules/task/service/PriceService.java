@@ -31,4 +31,5 @@ public interface PriceService {
     List<Price> getCustomerPriceByPrice(int price, String priceType);
 
 
+    int update(Price price);
 }

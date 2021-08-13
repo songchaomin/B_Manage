@@ -11,6 +11,8 @@ import com.linln.common.utils.ResultVoUtil;
 import com.linln.common.utils.SpringContextUtil;
 import com.linln.common.vo.ResultVo;
 import com.linln.component.shiro.ShiroUtil;
+import com.linln.modules.notice.domain.Notice;
+import com.linln.modules.notice.service.NoticeService;
 import com.linln.modules.system.domain.Menu;
 import com.linln.modules.system.domain.Role;
 import com.linln.modules.system.domain.Upload;
@@ -21,6 +23,9 @@ import com.linln.modules.system.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -48,6 +53,10 @@ public class MainController{
     @Autowired
     private MenuService menuService;
 
+
+
+    @Autowired
+    private NoticeService noticeService;
     /**
      * 后台主体内容
      */
@@ -100,7 +109,16 @@ public class MainController{
      */
     @GetMapping("/index")
     @RequiresPermissions("index")
-    public String index(Model model){
+    public String index(Model model, Notice notice){
+        // 创建匹配器，进行动态查询匹配
+        ExampleMatcher matcher = ExampleMatcher.matching().
+                withMatcher("title", match -> match.contains());
+        Example<Notice> example = Example.of(notice, matcher);
+        Page<Notice> list = noticeService.getPageList(example);
+        // 封装数据
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
+
         return "/system/main/index";
     }
 

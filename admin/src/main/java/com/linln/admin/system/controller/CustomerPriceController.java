@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-
 @Controller
 @RequestMapping("/customerPrice")
 public class CustomerPriceController {
@@ -48,7 +47,6 @@ public class CustomerPriceController {
         return "/customerPrice/index";
     }
 
-
     /**
      * 跳转到添加页面
      */
@@ -57,7 +55,6 @@ public class CustomerPriceController {
     public String toAdd(){
         return "/customerPrice/add";
     }
-
 
     @PostMapping({"/add"})
     @RequiresPermissions({"customerPrice:add"})
@@ -70,8 +67,6 @@ public class CustomerPriceController {
         return ResultVoUtil.SAVE_SUCCESS;
     }
 
-
-
     /**
      * 跳转到编辑页面
      */
@@ -83,7 +78,6 @@ public class CustomerPriceController {
         return "/customerPrice/edit";
     }
 
-
     @GetMapping("/detail/{id}")
     @RequiresPermissions("customerPrice:detail")
     public String detail(@PathVariable("id") Long id, Model model) {
@@ -92,4 +86,24 @@ public class CustomerPriceController {
         return "/customerPrice/detail";
     }
 
+
+    @PostMapping("/update")
+    @RequiresPermissions("customerPrice:update")
+    @ResponseBody
+    public ResultVo update( @EntityParam Price price) {
+        // 验证数据是否合格
+        if (price.getId() == null) {
+            throw new RuntimeException("主键不能为空！");
+        }
+        priceService.update(price);
+        return ResultVoUtil.SAVE_SUCCESS;
+    }
+
+    @GetMapping("/delete/{id}")
+    @RequiresPermissions("customerPrice:delete")
+    @ResponseBody
+    public ResultVo delete(@PathVariable("id") Long id, Model model){
+        priceService.deleteMerchantPriceById(id);
+        return  ResultVoUtil.success("删除成功");
+    }
 }

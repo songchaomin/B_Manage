@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Page<User> getPageList(User user) {
         // 创建分页对象
-        PageRequest page = PageSort.pageRequest(Sort.Direction.ASC);
+        PageRequest page = PageSort.pageRequest(Sort.Direction.DESC);
 
         // 使用Specification复杂查询
         return userRepository.findAll(new Specification<User>(){

@@ -18,7 +18,7 @@ public class IntegralServiceImpl implements IntegralService {
     @Override
     public Page<Integral> getPageList(Example<Integral> example) {
         // 创建分页对象
-        PageRequest page = PageSort.pageRequest(Sort.Direction.ASC);
+        PageRequest page = PageSort.pageRequest(Sort.Direction.DESC);
         return integralRepository.findAll(example, page);
     }
 

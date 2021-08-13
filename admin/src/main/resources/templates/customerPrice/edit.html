@@ -13,7 +13,7 @@
 </style>
 <body>
 <div class="layui-form timo-compile">
-    <form th:action="@{/merchantPrice/edit}">
+    <form th:action="@{/customerPrice/update}">
         <input type="hidden" name="id" th:value="${item.id}">
         <div class="layui-form-item">
             <label class="layui-form-label required">价格类型</label>
@@ -38,6 +38,12 @@
             <label class="layui-form-label required">商家价目</label>
             <div class="layui-input-inline">
                 <input class="layui-input" type="text" name="price" th:value="${item.price}" >
+            </div>
+        </div>
+        <div class="layui-form-item ">
+            <label class="layui-form-label required">管理奖金</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="managePrice" th:value="${item.managePrice}" >
             </div>
         </div>
 
