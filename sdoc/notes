@@ -1,0 +1,2 @@
+alter table price modify price DECIMAL(12,2);
+alter table price modify manage_price DECIMAL(12,2);

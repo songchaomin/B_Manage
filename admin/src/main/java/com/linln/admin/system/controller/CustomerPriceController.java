@@ -1,5 +1,6 @@
 package com.linln.admin.system.controller;
 
+import com.linln.admin.system.domain.PriceRequest;
 import com.linln.admin.system.validator.MerchantPriceValid;
 import com.linln.common.utils.ResultVoUtil;
 import com.linln.common.vo.ResultVo;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Controller
@@ -59,11 +61,17 @@ public class CustomerPriceController {
     @PostMapping({"/add"})
     @RequiresPermissions({"customerPrice:add"})
     @ResponseBody
-    @ActionLog(name = "店铺管理", message = "店铺：${userName}", action = SaveAction.class)
-    public ResultVo save(@Validated MerchantPriceValid valid, @EntityParam Price price){
-        price.setDeleteFlg((byte)0);
-        price.setCreateDate(new Date());
-        priceService.save(price);
+    public ResultVo save(@Validated MerchantPriceValid valid, @EntityParam PriceRequest price){
+        Price newPrice=new Price();
+        newPrice.setDeleteFlg((byte)0);
+        newPrice.setCreateDate(new Date());
+        newPrice.setSystemName(price.getSystemName());
+        newPrice.setPriceType(price.getPriceType());
+        newPrice.setPriceStart(price.getPriceStart());
+        newPrice.setPriceEnd(price.getPriceEnd());
+        newPrice.setPrice(new BigDecimal(price.getPrice()).setScale(2,BigDecimal.ROUND_HALF_DOWN));
+        newPrice.setManagePrice(new BigDecimal(price.getManagePrice()).setScale(2,BigDecimal.ROUND_HALF_DOWN));
+        priceService.save(newPrice);
         return ResultVoUtil.SAVE_SUCCESS;
     }
 

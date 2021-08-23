@@ -97,7 +97,7 @@ public class RobTaskController {
         Task oldTask = taskService.getTaskById(oldRobTask.getTaskId());
         String taskType = oldTask.getTaskType();//类型
         BigDecimal babyPrice = oldTask.getBabyPrice();//本金
-        List<Price> customerPriceByPrice = priceService.getCustomerPriceByPrice(babyPrice.intValue(), taskType);
+        List<Price> customerPriceByPrice = priceService.getCustomerPriceByPrice(babyPrice, taskType);
         //计算积分数
         if(!CollectionUtils.isEmpty(customerPriceByPrice)){
             Price price = customerPriceByPrice.get(0);
@@ -105,6 +105,7 @@ public class RobTaskController {
             //调用C端接口
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("integral",totalIntegral);
+            jsonObject.put("manageIntegral",price.getManagePrice());
             jsonObject.put("userName",oldRobTask.getCUserName());
             jsonObject.put("operatorName",subject.getUsername());
             try {

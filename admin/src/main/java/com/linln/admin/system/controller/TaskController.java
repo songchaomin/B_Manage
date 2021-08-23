@@ -136,7 +136,7 @@ public class TaskController {
     @PostMapping("/robOrder")
     @ResponseBody
     public ResultVo robOrder(@RequestBody String  task) {
-        // 获取用户列表
+        // 获取抢单列表
         ResultVo resultVo = taskService.robOrder(task);
         return resultVo;
     }
@@ -165,8 +165,12 @@ public class TaskController {
         task.setMerchantName(user.getUsername());
         task.setMerchantId(user.getId());
         task.setTaskStatus((byte)1);
-
         task.setEffective((byte)0);
+        //计算佣金
+        List<Price> customerPriceByPrice = priceService.getCustomerPriceByPrice(task.getBabyPrice(), task.getTaskType());
+        if (!CollectionUtils.isEmpty(customerPriceByPrice)){
+            task.setYj(customerPriceByPrice.get(0).getPrice());
+        }
         Task newTask = taskService.save(task);
         ResultVo resultVo=new ResultVo();
         if(newTask!=null){
@@ -182,7 +186,7 @@ public class TaskController {
     }
 
     /**
-     * 发布浏览
+     * 确认发布
      * @param valid 验证对象
      */
     @PostMapping({"/update"})
@@ -190,10 +194,6 @@ public class TaskController {
     @ResponseBody
     public ResultVo update(@Validated TaskValid valid, @EntityParam Task task, HttpServletRequest request){
         User user = ShiroUtil.getSubject();
-        //1、任务名称是否重复
-        if ( taskService.repeateTaskName(user.getUsername(),task.getTaskName())) {
-            throw new ResultException(ResultEnum.SHOP_SHOPNAME_ERROR);
-        }
         if(task.getId()==null){
             task.setCreateDate(new Date());
             task.setUpdateDate(new Date());
@@ -211,6 +211,11 @@ public class TaskController {
         //用户编号
         task.setTaskStatus((byte)1);
         task.setEffective((byte)1);
+        //计算佣金
+        List<Price> customerPriceByPrice = priceService.getCustomerPriceByPrice(task.getBabyPrice(), task.getTaskType());
+        if (!CollectionUtils.isEmpty(customerPriceByPrice)){
+            task.setYj(customerPriceByPrice.get(0).getPrice());
+        }
         taskService.save(task);
         return ResultVoUtil.SAVE_SUCCESS;
     }
@@ -222,9 +227,11 @@ public class TaskController {
     @ResponseBody
     public ResultVo delete(@PathVariable("id") Long id, Model model){
         Task oldTask = taskService.getTaskById(id);
-        if (oldTask.getTaskStatus()>=2){
+        //判断该任务是否全部完成，如果没有全部完成不允许删除
+
+       /* if (oldTask.getTaskStatus()>=2){
             return ResultVoUtil.error("只有待审核状态的任务可以删除！");
-        }
+        }*/
         taskService.deleteTaskById(id);
         return  ResultVoUtil.SAVE_SUCCESS;
     }
@@ -252,7 +259,7 @@ public class TaskController {
         //任务数量
         Integer personNum = oldTask.getPersonNum();
         String merchantName = oldTask.getMerchantName();
-        List<Price> priceByPrice = priceService.getMerchantPriceByPrice(babyPrice.intValue(), taskType);
+        List<Price> priceByPrice = priceService.getMerchantPriceByPrice(babyPrice, taskType);
         if(!CollectionUtils.isEmpty(priceByPrice)){
             try {
                 //B端商户的促销价

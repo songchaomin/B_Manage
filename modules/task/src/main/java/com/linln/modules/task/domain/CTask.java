@@ -40,6 +40,12 @@ public class CTask implements Serializable {
      * 宝贝本金
      */
     private BigDecimal babyPrice;
+
+    /**
+     * 佣金
+     */
+    private BigDecimal yj;
+
     /**
      * 是否关注店铺
      */

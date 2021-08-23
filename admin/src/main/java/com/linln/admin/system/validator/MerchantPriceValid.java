@@ -34,7 +34,7 @@ public class MerchantPriceValid implements Serializable {
      * price
      */
     @NotNull(message = "价格不能为空")
-    private Integer price;
+    private BigDecimal price;
 
 
 }

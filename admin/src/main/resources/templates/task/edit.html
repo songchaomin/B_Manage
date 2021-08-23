@@ -53,9 +53,9 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label required">宝贝链接</label>
+                        <label class="layui-form-label required">宝贝描述</label>
                         <div class="layui-input-inline">
-                            <input class="layui-input" type="text" name="babyLink" th:value="${task.babyLink}"  placeholder="请输入宝贝链接">
+                            <input class="layui-input" type="text" name="babyLink" th:value="${task.babyLink}"  placeholder="请输入宝贝描述">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -372,6 +372,8 @@
             e.preventDefault();
             var form = $(this).parents("form");
             var url = "/task/update";
+            var checkData = tree.getChecked('xltree1');
+            $("#xl").val(JSON.stringify(checkData));
             var serializeArray = form.serializeArray();
             $.post(url, serializeArray, function (result) {
                 if (result.data == null) {

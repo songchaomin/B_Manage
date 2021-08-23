@@ -41,12 +41,12 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public List<Price> getMerchantPriceByPrice(int price, String priceType) {
+    public List<Price> getMerchantPriceByPrice(BigDecimal price, String priceType) {
         return priceRepository.getMerchantPriceByPrice(price,priceType);
     }
 
     @Override
-    public List<Price> getCustomerPriceByPrice(int price, String priceType) {
+    public List<Price> getCustomerPriceByPrice(BigDecimal price, String priceType) {
         return priceRepository.getCustomerPriceByPrice(price,priceType);
     }
 

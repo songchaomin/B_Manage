@@ -152,7 +152,7 @@ public class TaskServiceImpl implements TaskService {
         //查询该用户该店铺所有抢过单的任务
         String taskType = cTask.getTaskType();
         if("淘宝".equals(taskType) || "京东".equals(taskType) || "拼多多".equals(taskType)){
-            int tenDayRobTask=robTaskRepository.queryTenDayRobTask(cTask.getCUserName(), cTask.getShopName(),9);
+            int tenDayRobTask=robTaskRepository.queryTenDayRobTask(cTask.getCUserName(), cTask.getShopName(),6);
             if (tenDayRobTask>=1){
                 resultVo.setCode(0);
                 resultVo.setMsg("抢单失败，请尝试其它任务！");
