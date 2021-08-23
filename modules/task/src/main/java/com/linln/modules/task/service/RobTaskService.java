@@ -5,6 +5,8 @@ import com.linln.modules.task.domain.RobTask;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface RobTaskService {
 
     Page<RobTask> merchantGetRobTaskList(Example<RobTask> example);
@@ -20,4 +22,6 @@ public interface RobTaskService {
     int updateRobTask(String robTask);
 
     RobTask getRobTaskById(Long id);
+
+    int getRobTaskByTaskId(Long taskId);
 }

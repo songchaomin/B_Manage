@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.server.ServerEndpoint;
+import java.util.List;
 
 @Service
 public class RobTaskServiceImpl implements RobTaskService {
@@ -53,5 +54,10 @@ public class RobTaskServiceImpl implements RobTaskService {
     @Override
     public RobTask getRobTaskById(Long id) {
         return robTaskRepository.getOne(id);
+    }
+
+    @Override
+    public int getRobTaskByTaskId(Long taskId) {
+        return robTaskRepository.getRobTaskByTaskId(taskId);
     }
 }

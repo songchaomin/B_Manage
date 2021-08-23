@@ -81,6 +81,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void updateStatus(Long taskId, int i) {
+        taskRepository.updateStatus(taskId,i);
+    }
+
+    @Override
     public Page<Task> getPageList2C(String cUser) {
         CUser user = JSONObject.parseObject(cUser, CUser.class);
         PageRequest page =PageRequest.of(user.page-1,user.limit);
@@ -179,4 +184,6 @@ public class TaskServiceImpl implements TaskService {
         robTaskRepository.save(robTask);
         return ResultVoUtil.success("抢单成功！");
     }
+
+
 }

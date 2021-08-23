@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface RobTaskRepository extends BaseRepository<RobTask,Long>, JpaSpecificationExecutor<RobTask> {
 
     @Query(value = "select count(1)  from rob_task  where task_id=?1 ",nativeQuery = true)
@@ -29,4 +31,8 @@ public interface RobTaskRepository extends BaseRepository<RobTask,Long>, JpaSpec
 
     @Query(value = "SELECT count(1) FROM rob_task a left join task b on a.task_id=b.id where a.c_user_name=?1 and b.shop_name=?2 and DATE_ADD(a.create_date,INTERVAL ?3 day)>now()",nativeQuery = true)
     int queryTenDayRobTask(String cUserName, String shopName,int day);
+
+    @Query(value = "SELECT count(1) FROM rob_task  where task_id=?1  ",nativeQuery = true)
+
+    int getRobTaskByTaskId(Long taskId);
 }

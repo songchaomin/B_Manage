@@ -31,10 +31,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/robTask")
-@PropertySource(value = {"classpath:application.yml"},factory = YamlPropertySourceFactory.class)
+@PropertySource(value = {"classpath:application.yml"}, factory = YamlPropertySourceFactory.class)
 public class RobTaskController {
     @Value("${addCustomIntegralUrl}")
-    private  String addCustomIntegralUrl;
+    private String addCustomIntegralUrl;
 
     @Autowired
     private RobTaskService robTaskService;
@@ -48,48 +48,47 @@ public class RobTaskController {
     @GetMapping("/delete/{id}")
     @RequiresPermissions("robTask:delete")
     @ResponseBody
-    public ResultVo delete(@PathVariable("id") Long id, Model model){
+    public ResultVo delete(@PathVariable("id") Long id, Model model) {
         robTaskService.delRobTaskById(id);
-        return  ResultVoUtil.success("删除成功");
+        return ResultVoUtil.success("删除成功");
     }
 
     @GetMapping("/get/{id}")
     @ResponseBody
-    public ResultVo getRobTask(@PathVariable("id") Long id, Model model){
-        ResultVo resultVo=new ResultVo();
+    public ResultVo getRobTask(@PathVariable("id") Long id, Model model) {
+        ResultVo resultVo = new ResultVo();
         RobTask robTaskById = robTaskService.getRobTaskById(id);
         String payPicUrl = robTaskById.getPayPicUrl();
-        if (!StringUtils.isEmpty(payPicUrl)){
-            ArrayList<String> urls=new ArrayList<>();
+        if (!StringUtils.isEmpty(payPicUrl)) {
+            ArrayList<String> urls = new ArrayList<>();
             String[] split = payPicUrl.split(",");
-            for(String s:split){
+            for (String s : split) {
                 urls.add(s);
             }
             resultVo.setData(urls);
         }
         resultVo.setCode(200);
         resultVo.setMsg("查询成功");
-        return  resultVo;
+        return resultVo;
     }
-
 
     @GetMapping("/auditAccount/{id}")
     @RequiresPermissions("robTask:auditAccount")
     @ResponseBody
-    public ResultVo auditAccount(@PathVariable("id") Long id, Model model){
-        robTaskService.changeRobTaskStatus(id,4);
-        return  ResultVoUtil.success("审核成功");
+    public ResultVo auditAccount(@PathVariable("id") Long id, Model model) {
+        robTaskService.changeRobTaskStatus(id, 4);
+        return ResultVoUtil.success("审核成功");
     }
 
     @GetMapping("/deliver/{id}")
     @RequiresPermissions("robTask:deliver")
     @ResponseBody
-    public ResultVo deliver(@PathVariable("id") Long id, Model model){
-        ResultVo resultVo=new ResultVo();
+    public ResultVo deliver(@PathVariable("id") Long id, Model model) {
+        ResultVo resultVo = new ResultVo();
         User subject = ShiroUtil.getSubject();
         //发货成功，增加C端用户的积分
         RobTask oldRobTask = robTaskService.getRobTaskById(id);
-        if (oldRobTask==null){
+        if (oldRobTask == null) {
             resultVo.setCode(-1);
             resultVo.setMsg("没有有效的抢单任务，发货失败");
         }
@@ -99,35 +98,38 @@ public class RobTaskController {
         BigDecimal babyPrice = oldTask.getBabyPrice();//本金
         List<Price> customerPriceByPrice = priceService.getCustomerPriceByPrice(babyPrice, taskType);
         //计算积分数
-        if(!CollectionUtils.isEmpty(customerPriceByPrice)){
+        if (!CollectionUtils.isEmpty(customerPriceByPrice)) {
             Price price = customerPriceByPrice.get(0);
-            BigDecimal totalIntegral=babyPrice.add(price.getPrice());
+            BigDecimal totalIntegral = babyPrice.add(price.getPrice());
             //调用C端接口
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("integral",totalIntegral);
-            jsonObject.put("manageIntegral",price.getManagePrice());
-            jsonObject.put("userName",oldRobTask.getCUserName());
-            jsonObject.put("operatorName",subject.getUsername());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("integral", totalIntegral);
+            jsonObject.put("manageIntegral", price.getManagePrice());
+            jsonObject.put("userName", oldRobTask.getCUserName());
+            jsonObject.put("operatorName", subject.getUsername());
             try {
                 String result = HttpClientUtil.doPost(addCustomIntegralUrl, jsonObject.toJSONString());
-                System.out.println(result);
             } catch (Exception e) {
                 resultVo.setCode(-1);
                 resultVo.setMsg("调用更新C端用户积分时，远程服务器没有响应，发货失败");
             }
-        }else{
+        } else {
             resultVo.setCode(-1);
             resultVo.setMsg("C端积分增加失败，请确认C端价格管理有该对应的价格");
         }
-        robTaskService.changeRobTaskStatus(id,6);
-        return  ResultVoUtil.success("发货成功");
+        robTaskService.changeRobTaskStatus(id, 6);
+        //获取已抢单的任务
+        int robtaskNum = robTaskService.getRobTaskByTaskId(oldRobTask.getTaskId());
+        int oldtaskNum = oldTask.getPersonNum();
+        if (robtaskNum == oldtaskNum) {
+            taskService.updateStatus(oldTask.getId(), 7);
+        }
+        return ResultVoUtil.success("发货成功");
     }
-
-
 
     @PostMapping("/updateRobTask")
     @ResponseBody
-    public ResultVo updateRobTask(@RequestBody String  robTask) {
+    public ResultVo updateRobTask(@RequestBody String robTask) {
         try {
             robTaskService.updateRobTask(robTask);
         } catch (Exception e) {

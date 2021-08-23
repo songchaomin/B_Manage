@@ -45,8 +45,8 @@
                     </th>
                     <th class="sortable" data-field="taskName">任务名称</th>
                     <th class="sortable" data-field="taskType">任务类型</th>
-                 <!--   <th class="sortable" data-field="cUserName">用户编码</th>
-                    <th class="sortable" data-field="cNickName">用户名称</th>-->
+                   <th class="sortable" data-field="cUserName">用户编码</th>
+                    <!-- <th class="sortable" data-field="cNickName">用户名称</th>-->
                     <th class="sortable" data-field="wangwangId">账号名称</th>
                     <th class="sortable" data-field="qq">QQ</th>
                     <th class="sortable" data-field="robTaskStatus">任务状态</th>
@@ -61,8 +61,8 @@
                         <i class="layui-icon layui-icon-ok"></i></label></td>
                     <td th:text="${item.taskName}">任务名称</td>
                     <td th:text="${item.taskType}">任务类型</td>
-                  <!--  <td th:text="${item.cUserName}">用户编码</td>
-                    <td th:text="${item.cNickName}">用户名称</td>-->
+                   <td th:text="${item.cUserName}">用户编码</td>
+                    <!-- <td th:text="${item.cNickName}">用户名称</td>-->
                     <td th:switch="${item.taskType}">
                         <span  th:case="淘宝" th:text="${item.wangwangId}" ></span>
                         <span  th:case="抖音" th:text="${item.dyId}" ></span>

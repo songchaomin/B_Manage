@@ -23,7 +23,8 @@ public interface TaskRepository extends BaseRepository<Task,Long>, JpaSpecificat
     @Query(value = "update  task set task_status= 1 where id=?1 and delete_flg=0",nativeQuery = true)
     void unAuditTaskById(Long id);
 
-
-
-
+    @Modifying
+    @Transactional
+    @Query(value = "update  task set task_status= ?2 where id=?1 and delete_flg=0",nativeQuery = true)
+    void updateStatus(Long taskId, int i);
 }

@@ -40,4 +40,6 @@ public interface TaskService {
     ResultVo robOrder(String task);
 
     Page<RobTask> getRobTaskByUserName(String userName,int page,int limit);
+
+    void updateStatus(Long id, int i);
 }
